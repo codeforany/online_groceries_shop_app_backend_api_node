@@ -8,6 +8,10 @@ const msg_server_internal_error = "Server Internal Error"
 
 module.exports = {
 
+    ImagePath: () => {
+        return "http://192.168.1.2:3001/img/";
+    },
+
     ThrowHtmlError: (err, res) => {
 
         Dlog("---------------------------- App is Helpers Throw Crash(" + serverYYYYMMDDHHmmss() + ") -------------------------" )
@@ -111,7 +115,14 @@ module.exports = {
 
     serverYYYYMMDDHHmmss:()=>{
         return serverYYYYMMDDHHmmss();
-    }
+    },
+
+    fileNameGenerate: (extension) => {
+        var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        var result = '';
+        for (let i = 10; i > 0; i--) result += chars[Math.floor(Math.random() * chars.length)];
+        return serverDateTime('YYYYMMDDHHmmssms') + result + '.' + extension;
+    },
 
 }
 

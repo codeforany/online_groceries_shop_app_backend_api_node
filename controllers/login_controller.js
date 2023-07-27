@@ -98,3 +98,31 @@ module.exports.controller = (app, io, socket_list) => {
         })
     })
 }
+
+function checkAccessToken(headerObj, res, callback, require_type = "") {
+    helper.Dlog(headerObj.access_token);
+    helper.CheckParameterValid(res, headerObj, ["access_token"] , () => {
+        db.query("SELECT `user_id`, `username`, `user_type`, `name`, `email`, `mobile`, `mobile_code`,  `auth_token`, `dervice_token`, `status` FROM `user_detail` WHERE `auth_token` = ? AND `status` = ? ", [headerObj.access_token, "1"], (err, result) => {
+            if(err) {
+                helper.ThrowHtmlError(err, res);
+                return
+            }
+
+            helper.Dlog(result);
+
+            if(result.length > 0) {
+                if (require_type != "") {
+                    if(require_type == result[0].user_type) {
+                        return callback(result[0]);
+                    } else {
+                        res.json({ "status": "0", "code": "404", "message": "Access denied. Unauthorized user access." })
+                    }
+                }else{
+                    return callback(result[0]);
+                }
+            }else{
+                res.json({ "status": "0", "code":"404" , "message": "Access denied. Unauthorized user access."})
+            }
+        })
+    })
+}

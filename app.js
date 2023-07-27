@@ -83,7 +83,7 @@ Array.prototype.insert = (index, item) => {
 }
 
 Array.prototype.replace_null = (replace = '""') => {
-  return JSON.parse(JSON.stringify(this).replace(/mull/g, replace));
+  return JSON.parse(JSON.stringify(this).replace(/null/g, replace));
 }
 
 String.prototype.replaceAll = (search, replacement) => {

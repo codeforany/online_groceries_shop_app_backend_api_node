@@ -23,7 +23,8 @@ Order Tracking: Track your orders for better convenience.
 
 🙏 Thank you for joining us on this learning journey! We're thrilled to have you with us as we create an innovative shopping app together.
 
-- [Youtube Full Playlist: Online Grocery Shopping Node REST Api Playlist](https://www.youtube.com/playlist?list=PLzcRC7PA0xWR2TZ4f34X8Q_fvdwwRvm9I)
+- [Youtube Full Playlist: Online Grocery Shopping Node REST Api Playlist](https://www.youtube.com/playlist?list=PLzcRC7PA0xWQiIgIL526ZAxxVdSZMwx3l)
+
 - [Youtube Video - 1: Online Groceries Shop App Database And Table Create, Login Api & SignUp Api ](https://youtu.be/d61iFh0mTBI)
 
 ## Node.js Express Js Api Base Setup With MySQL & Socket.io

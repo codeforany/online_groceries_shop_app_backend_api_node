@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 25, 2023 at 07:05 AM
+-- Generation Time: Jul 27, 2023 at 06:58 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.0
 
@@ -55,6 +55,13 @@ CREATE TABLE `brand_detail` (
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `brand_detail`
+--
+
+INSERT INTO `brand_detail` (`brand_id`, `brand_name`, `status`, `created_date`, `modify_date`) VALUES
+(1, 'bigs', 1, '2023-07-26 15:16:50', '2023-07-26 15:18:39');
+
 -- --------------------------------------------------------
 
 --
@@ -87,6 +94,14 @@ CREATE TABLE `category_detail` (
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `category_detail`
+--
+
+INSERT INTO `category_detail` (`cat_id`, `cat_name`, `image`, `color`, `status`, `created_date`, `modify_date`) VALUES
+(1, 'Frash Fruits & Vegetable', 'category/20230726155407547qM5gSxkrCh.png', '53B175', 1, '2023-07-26 15:54:07', '2023-07-26 15:57:30'),
+(2, 'Cooking Oil & Ghee', 'category/202307261555485548dKi8yJisIn.png', 'F8A44C', 1, '2023-07-26 15:54:43', '2023-07-26 15:55:48');
+
 -- --------------------------------------------------------
 
 --
@@ -116,6 +131,15 @@ CREATE TABLE `image_detail` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `image_detail`
+--
+
+INSERT INTO `image_detail` (`img_id`, `prod_id`, `image`, `status`, `created_date`, `modify_date`) VALUES
+(1, 4, '20230727154318431880O0w5WjdS.png', 1, '2023-07-27 15:43:18', '2023-07-27 15:43:18'),
+(2, 4, '202307271543184318ziFG4JXVxl.png', 1, '2023-07-27 15:43:18', '2023-07-27 15:43:18'),
+(3, 4, 'product/20230727161106116DsCP0Lq5md.png', 2, '2023-07-27 16:11:06', '2023-07-27 16:13:44');
 
 -- --------------------------------------------------------
 
@@ -148,6 +172,15 @@ CREATE TABLE `nutrition_detail` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `nutrition_detail`
+--
+
+INSERT INTO `nutrition_detail` (`nutrition_id`, `prod_id`, `nutrition_name`, `nutrition_value`, `status`, `created_date`, `modify_date`) VALUES
+(1, 4, 'Calories', '104', 1, '2023-07-27 15:43:18', '2023-07-27 15:43:18'),
+(2, 4, 'Fat', '0.3g', 1, '2023-07-27 15:43:18', '2023-07-27 15:43:18'),
+(3, 4, 'Sodium', '3mg', 2, '2023-07-27 16:06:59', '2023-07-27 16:09:58');
 
 -- --------------------------------------------------------
 
@@ -222,11 +255,22 @@ CREATE TABLE `product_detail` (
   `detail` varchar(5000) NOT NULL DEFAULT '',
   `unit_name` varchar(50) NOT NULL DEFAULT '',
   `unit_value` varchar(20) NOT NULL DEFAULT '',
+  `nutrition_weight` varchar(20) NOT NULL DEFAULT '100g',
   `price` double NOT NULL DEFAULT 0,
   `status` int(1) NOT NULL DEFAULT 1 COMMENT '1: active, 2: delete',
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_detail`
+--
+
+INSERT INTO `product_detail` (`prod_id`, `cat_id`, `brand_id`, `type_id`, `name`, `detail`, `unit_name`, `unit_value`, `nutrition_weight`, `price`, `status`, `created_date`, `modify_date`) VALUES
+(1, 1, 1, 1, 'Red Apple', 'ABCASDAD ASDASDASDSD', 'kg', '1', '200g', 2.99, 2, '2023-07-27 15:40:18', '2023-07-27 16:05:49'),
+(2, 1, 1, 1, 'Red Apple', 'ABCASDAD ASDASDASDSD', 'kg', '1', '200g', 2.99, 1, '2023-07-27 15:41:33', '2023-07-27 15:41:33'),
+(3, 1, 1, 1, 'Red Apple', 'ABCASDAD ASDASDASDSD', 'kg', '1', '200g', 2.99, 1, '2023-07-27 15:42:14', '2023-07-27 15:42:14'),
+(4, 1, 1, 1, 'Red Apple', 'ABCASDAD ASDASDASDSD', 'kg', '1', '100g', 2.99, 1, '2023-07-27 15:43:18', '2023-07-27 16:05:04');
 
 -- --------------------------------------------------------
 
@@ -278,6 +322,13 @@ CREATE TABLE `type_detail` (
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `type_detail`
+--
+
+INSERT INTO `type_detail` (`type_id`, `type_name`, `image`, `color`, `status`, `created_date`, `modify_date`) VALUES
+(1, 'Pulses', 'type/202307261610181018aVOpgmY1W1.png', 'F8A44C', 1, '2023-07-26 16:10:18', '2023-07-26 16:12:39');
+
 -- --------------------------------------------------------
 
 --
@@ -287,6 +338,7 @@ CREATE TABLE `type_detail` (
 CREATE TABLE `user_detail` (
   `user_id` int(11) NOT NULL,
   `username` varchar(75) NOT NULL DEFAULT '',
+  `user_type` int(1) NOT NULL DEFAULT 1 COMMENT '1= user , 2 = admin',
   `name` varchar(100) NOT NULL DEFAULT '',
   `email` varchar(100) NOT NULL DEFAULT '',
   `mobile` varchar(15) NOT NULL DEFAULT '',
@@ -299,6 +351,14 @@ CREATE TABLE `user_detail` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_detail`
+--
+
+INSERT INTO `user_detail` (`user_id`, `username`, `user_type`, `name`, `email`, `mobile`, `mobile_code`, `password`, `auth_token`, `dervice_token`, `reset_code`, `status`, `created_date`, `modify_date`) VALUES
+(1, 'admin', 2, 'admin', 'admin@admin.com', '', '', '', 'L3ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-26 14:57:59', '2023-07-26 14:57:59'),
+(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 'L2ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-25 10:57:32', '2023-07-25 10:57:45');
 
 --
 -- Indexes for dumped tables
@@ -414,7 +474,7 @@ ALTER TABLE `address_detail`
 -- AUTO_INCREMENT for table `brand_detail`
 --
 ALTER TABLE `brand_detail`
-  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `cart_detail`
@@ -426,7 +486,7 @@ ALTER TABLE `cart_detail`
 -- AUTO_INCREMENT for table `category_detail`
 --
 ALTER TABLE `category_detail`
-  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `favorite_detail`
@@ -438,7 +498,7 @@ ALTER TABLE `favorite_detail`
 -- AUTO_INCREMENT for table `image_detail`
 --
 ALTER TABLE `image_detail`
-  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `notification_detail`
@@ -450,7 +510,7 @@ ALTER TABLE `notification_detail`
 -- AUTO_INCREMENT for table `nutrition_detail`
 --
 ALTER TABLE `nutrition_detail`
-  MODIFY `nutrition_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `nutrition_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `offer_detail`
@@ -474,7 +534,7 @@ ALTER TABLE `order_payment_detail`
 -- AUTO_INCREMENT for table `product_detail`
 --
 ALTER TABLE `product_detail`
-  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `promo_code_detail`
@@ -492,13 +552,13 @@ ALTER TABLE `review_detail`
 -- AUTO_INCREMENT for table `type_detail`
 --
 ALTER TABLE `type_detail`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user_detail`
 --
 ALTER TABLE `user_detail`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
