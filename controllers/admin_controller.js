@@ -16,6 +16,8 @@ module.exports.controller = (app, io, socket_list) => {
     const msg_brand_update = "Brand updated Successfully.";
     const msg_brand_delete = "Brand deleted Successfully.";
 
+    
+
     const msg_category_added = "Category added Successfully.";
     const msg_category_update = "Category updated Successfully.";
     const msg_category_delete = "Category deleted Successfully.";
@@ -34,6 +36,14 @@ module.exports.controller = (app, io, socket_list) => {
 
     const msg_product_image_added = "Product image added Successfully.";
     const msg_product_image_delete = "Product image deleted Successfully.";
+
+    const msg_zone_added = "zone added Successfully.";
+    const msg_zone_update = "zone updated Successfully.";
+    const msg_zone_delete = "zone deleted Successfully.";
+
+    const msg_area_added = "area added Successfully.";
+    const msg_area_update = "area updated Successfully.";
+    const msg_area_delete = "area deleted Successfully.";
 
     const msg_already_added = "this value already added here";
 
@@ -962,6 +972,261 @@ module.exports.controller = (app, io, socket_list) => {
         })
     }
 
+    app.post('/api/admin/zone_add', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        helper.CheckParameterValid(res, reqObj, ["zone_name"], () => {
+
+            checkAccessToken(req.headers, res, (uObj) => {
+
+                db.query("SELECT `zone_id`, `name` FROM `zone_detail` WHERE `name`  = ? AND `status` = ?", [reqObj.zone_name, "1"], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return;
+                    }
+
+                    if (result.length > 0) {
+                        //already added this brand
+
+                        res.json({ "status": "1", "payload": result[0], "message": msg_already_added });
+
+                    } else {
+                        db.query("INSERT INTO `zone_detail`( `name`, `created_date`, `modify_date`) VALUES (?, NOW(), NOW())", [
+                            reqObj.zone_name
+                        ], (err, result) => {
+
+                            if (err) {
+                                helper.ThrowHtmlError(err, res);
+                                return;
+                            }
+
+                            if (result) {
+                                res.json({
+                                    "status": "1", "payload": {
+                                        "zone_id": result.insertId,
+                                        "name": reqObj.zone_name,
+                                    }, "message": msg_zone_added
+                                });
+                            } else {
+                                res.json({ "status": "0", "message": msg_fail })
+                            }
+
+                        })
+
+                    }
+                })
+
+            }, "2")
+        })
+    })
+
+    app.post('/api/admin/zone_update', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        helper.CheckParameterValid(res, reqObj, ["zone_id", "zone_name"], () => {
+
+            checkAccessToken(req.headers, res, (uObj) => {
+
+
+                db.query("UPDATE `zone_detail` SET `name`= ?, `modify_date` = NOW() WHERE `zone_id`= ? AND `status` = ? ", [
+                    reqObj.zone_name, reqObj.zone_id, "1"
+                ], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return;
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1", "message": msg_zone_update
+                        });
+                    } else {
+                        res.json({ "status": "0", "message": msg_fail })
+                    }
+
+                })
+            }, "2")
+        })
+    })
+
+    app.post('/api/admin/zone_delete', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        helper.CheckParameterValid(res, reqObj, ["zone_id"], () => {
+
+            checkAccessToken(req.headers, res, (uObj) => {
+                db.query("UPDATE `zone_detail` SET `status`= ?, `modify_date` = NOW() WHERE `zone_id`= ? ", [
+                    "2", reqObj.zone_id,
+                ], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return;
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1", "message": msg_zone_delete
+                        });
+                    } else {
+                        res.json({ "status": "0", "message": msg_fail })
+                    }
+
+                })
+            }, "2")
+        })
+    })
+
+    app.post('/api/admin/zone_list', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        checkAccessToken(req.headers, res, (uObj) => {
+            db.query("SELECT `zone_id`, `name` FROM `zone_detail` WHERE `status`= ? ", [
+                "1"
+            ], (err, result) => {
+
+                if (err) {
+                    helper.ThrowHtmlError(err, res);
+                    return;
+                }
+
+                res.json({
+                    "status": "1", "payload": result
+                });
+            })
+        }, "2")
+    })
+
+    app.post('/api/admin/area_add', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        helper.CheckParameterValid(res, reqObj, ["area_name", "zone_id" ], () => {
+
+            checkAccessToken(req.headers, res, (uObj) => {
+
+                db.query("SELECT `area_id`, `name` FROM `area_detail` WHERE `name`  = ? AND `zone_id` = ? AND `status` = ?", [reqObj.area_name, reqObj.zone_id,  "1"], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return;
+                    }
+
+                    if (result.length > 0) {
+                        //already added this brand
+
+                        res.json({ "status": "1", "payload": result[0], "message": msg_already_added });
+
+                    } else {
+                        db.query("INSERT INTO `area_detail`( `name`, `zone_id` , `created_date`, `modify_date`) VALUES (?,?, NOW(), NOW())", [
+                            reqObj.area_name, reqObj.zone_id
+                        ], (err, result) => {
+
+                            if (err) {
+                                helper.ThrowHtmlError(err, res);
+                                return;
+                            }
+
+                            if (result) {
+                                res.json({
+                                    "status": "1", "message": msg_area_added
+                                });
+                            } else {
+                                res.json({ "status": "0", "message": msg_fail })
+                            }
+                        })
+
+                    }
+                })
+
+            }, "2")
+        })
+    })
+
+    app.post('/api/admin/area_update', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        helper.CheckParameterValid(res, reqObj, ["area_id", "zone_id" , "area_name"], () => {
+
+            checkAccessToken(req.headers, res, (uObj) => {
+
+
+                db.query("UPDATE `area_detail` SET `name`= ?, `zone_id` = ? , `modify_date` = NOW() WHERE `area_id`= ? AND `status` = ? ", [
+                    reqObj.area_name, reqObj.zone_id, reqObj.area_id, "1"
+                ], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return;
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1", "message": msg_area_update
+                        });
+                    } else {
+                        res.json({ "status": "0", "message": msg_fail })
+                    }
+
+                })
+            }, "2")
+        })
+    })
+
+    app.post('/api/admin/area_delete', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        helper.CheckParameterValid(res, reqObj, ["area_id"], () => {
+
+            checkAccessToken(req.headers, res, (uObj) => {
+                db.query("UPDATE `area_detail` SET `status`= ?, `modify_date` = NOW() WHERE `area_id`= ? ", [
+                    "2", reqObj.area_id,
+                ], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return;
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1", "message": msg_area_delete
+                        });
+                    } else {
+                        res.json({ "status": "0", "message": msg_fail })
+                    }
+
+                })
+            }, "2")
+        })
+    })
+
+    app.post('/api/admin/area_list', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        checkAccessToken(req.headers, res, (uObj) => {
+            db.query("SELECT `ad`.`area_id`, `ad`.`zone_id` , `ad`.`name`, `zd`.`name` AS `zone_name`  FROM `area_detail` AS `ad` INNER JOIN `zone_detail` AS `zd` ON `zd`.`zone_id` = `ad`.`zone_id` AND `zd`.`status` = '1' WHERE `ad`.`status`= ? ", [
+                "1"
+            ], (err, result) => {
+
+                if (err) {
+                    helper.ThrowHtmlError(err, res);
+                    return;
+                }
+
+                res.json({
+                    "status": "1", "payload": result
+                });
+            })
+        }, "2")
+    })
 
 }
 

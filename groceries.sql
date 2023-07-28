@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 27, 2023 at 06:58 PM
+-- Generation Time: Jul 28, 2023 at 01:18 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.0
 
@@ -40,6 +40,32 @@ CREATE TABLE `address_detail` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `area_detail`
+--
+
+CREATE TABLE `area_detail` (
+  `area_id` int(11) NOT NULL,
+  `zone_id` int(11) NOT NULL DEFAULT 0,
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `status` int(1) NOT NULL DEFAULT 1,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `modify_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `area_detail`
+--
+
+INSERT INTO `area_detail` (`area_id`, `zone_id`, `name`, `status`, `created_date`, `modify_date`) VALUES
+(1, 2, 'Area 1', 1, '2023-07-28 16:32:06', '2023-07-28 16:33:46'),
+(2, 2, 'Area 2', 1, '2023-07-28 16:37:51', '2023-07-28 16:37:51'),
+(3, 1, 'Area 2', 1, '2023-07-28 16:37:55', '2023-07-28 16:37:55'),
+(4, 1, 'Area 1', 1, '2023-07-28 16:37:59', '2023-07-28 16:37:59'),
+(5, 1, 'Area 3', 1, '2023-07-28 16:38:02', '2023-07-28 16:38:02');
 
 -- --------------------------------------------------------
 
@@ -344,6 +370,7 @@ CREATE TABLE `user_detail` (
   `mobile` varchar(15) NOT NULL DEFAULT '',
   `mobile_code` varchar(6) NOT NULL DEFAULT '',
   `password` varchar(100) NOT NULL DEFAULT '',
+  `area_id` int(11) NOT NULL DEFAULT 0,
   `auth_token` varchar(100) NOT NULL DEFAULT '',
   `dervice_token` varchar(150) NOT NULL DEFAULT '',
   `reset_code` varchar(6) NOT NULL DEFAULT '0000',
@@ -356,9 +383,31 @@ CREATE TABLE `user_detail` (
 -- Dumping data for table `user_detail`
 --
 
-INSERT INTO `user_detail` (`user_id`, `username`, `user_type`, `name`, `email`, `mobile`, `mobile_code`, `password`, `auth_token`, `dervice_token`, `reset_code`, `status`, `created_date`, `modify_date`) VALUES
-(1, 'admin', 2, 'admin', 'admin@admin.com', '', '', '', 'L3ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-26 14:57:59', '2023-07-26 14:57:59'),
-(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 'L2ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-25 10:57:32', '2023-07-25 10:57:45');
+INSERT INTO `user_detail` (`user_id`, `username`, `user_type`, `name`, `email`, `mobile`, `mobile_code`, `password`, `area_id`, `auth_token`, `dervice_token`, `reset_code`, `status`, `created_date`, `modify_date`) VALUES
+(1, 'admin', 2, 'admin', 'admin@admin.com', '', '', '', 0, 'L3ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-26 14:57:59', '2023-07-26 14:57:59'),
+(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'L2ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-25 10:57:32', '2023-07-25 10:57:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `zone_detail`
+--
+
+CREATE TABLE `zone_detail` (
+  `zone_id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `status` int(1) NOT NULL DEFAULT 1,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `modify_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `zone_detail`
+--
+
+INSERT INTO `zone_detail` (`zone_id`, `name`, `status`, `created_date`, `modify_date`) VALUES
+(1, 'Zone 1', 1, '2023-07-28 16:22:28', '2023-07-28 16:24:16'),
+(2, 'Zone 2', 1, '2023-07-28 16:22:34', '2023-07-28 16:22:34');
 
 --
 -- Indexes for dumped tables
@@ -369,6 +418,12 @@ INSERT INTO `user_detail` (`user_id`, `username`, `user_type`, `name`, `email`, 
 --
 ALTER TABLE `address_detail`
   ADD PRIMARY KEY (`address_id`);
+
+--
+-- Indexes for table `area_detail`
+--
+ALTER TABLE `area_detail`
+  ADD PRIMARY KEY (`area_id`);
 
 --
 -- Indexes for table `brand_detail`
@@ -461,6 +516,12 @@ ALTER TABLE `user_detail`
   ADD PRIMARY KEY (`user_id`);
 
 --
+-- Indexes for table `zone_detail`
+--
+ALTER TABLE `zone_detail`
+  ADD PRIMARY KEY (`zone_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -469,6 +530,12 @@ ALTER TABLE `user_detail`
 --
 ALTER TABLE `address_detail`
   MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `area_detail`
+--
+ALTER TABLE `area_detail`
+  MODIFY `area_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `brand_detail`
@@ -559,6 +626,12 @@ ALTER TABLE `type_detail`
 --
 ALTER TABLE `user_detail`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `zone_detail`
+--
+ALTER TABLE `zone_detail`
+  MODIFY `zone_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
