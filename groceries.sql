@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 28, 2023 at 01:18 PM
+-- Generation Time: Jul 31, 2023 at 08:24 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.0
 
@@ -126,7 +126,11 @@ CREATE TABLE `category_detail` (
 
 INSERT INTO `category_detail` (`cat_id`, `cat_name`, `image`, `color`, `status`, `created_date`, `modify_date`) VALUES
 (1, 'Frash Fruits & Vegetable', 'category/20230726155407547qM5gSxkrCh.png', '53B175', 1, '2023-07-26 15:54:07', '2023-07-26 15:57:30'),
-(2, 'Cooking Oil & Ghee', 'category/202307261555485548dKi8yJisIn.png', 'F8A44C', 1, '2023-07-26 15:54:43', '2023-07-26 15:55:48');
+(2, 'Cooking Oil & Ghee', 'category/202307261555485548dKi8yJisIn.png', 'F8A44C', 1, '2023-07-26 15:54:43', '2023-07-26 15:55:48'),
+(3, 'Meat & Fish', 'category/20230731100233233AOuWmq6r64.png', 'F7A593', 1, '2023-07-31 10:02:33', '2023-07-31 10:02:33'),
+(4, 'Bakery & Snacks', 'category/20230731100257257bPdXFaneYu.png', 'D3B0E0', 1, '2023-07-31 10:02:57', '2023-07-31 10:02:57'),
+(5, 'Dairy & Eggs', 'category/20230731100322322vK4gHfIwCI.png', 'FDE598', 1, '2023-07-31 10:03:22', '2023-07-31 10:03:22'),
+(6, 'Beverages', 'category/20230731100347347lrk8CyW57u.png', 'B7DFF5', 1, '2023-07-31 10:03:47', '2023-07-31 10:03:47');
 
 -- --------------------------------------------------------
 
@@ -163,9 +167,14 @@ CREATE TABLE `image_detail` (
 --
 
 INSERT INTO `image_detail` (`img_id`, `prod_id`, `image`, `status`, `created_date`, `modify_date`) VALUES
-(1, 4, '20230727154318431880O0w5WjdS.png', 1, '2023-07-27 15:43:18', '2023-07-27 15:43:18'),
-(2, 4, '202307271543184318ziFG4JXVxl.png', 1, '2023-07-27 15:43:18', '2023-07-27 15:43:18'),
-(3, 4, 'product/20230727161106116DsCP0Lq5md.png', 2, '2023-07-27 16:11:06', '2023-07-27 16:13:44');
+(4, 5, 'product/202307310947354735xuruflIucc.png', 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(5, 6, 'product/202307310951365136W6nJvPCdzQ.png', 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(6, 7, 'product/202307310958175817ytVf7AVIOl.png', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(7, 8, 'product/202307311010091094RZ1nWHTug.png', 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(8, 9, 'product/202307311011551155pIjIPWIb4w.png', 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(9, 10, 'product/20230731101409149FomkojOsMt.png', 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(10, 11, 'product/202307311018321832QsO9noUdBS.png', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(11, 12, 'product/202307311022232223jrsJiejIQu.png', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23');
 
 -- --------------------------------------------------------
 
@@ -206,7 +215,70 @@ CREATE TABLE `nutrition_detail` (
 INSERT INTO `nutrition_detail` (`nutrition_id`, `prod_id`, `nutrition_name`, `nutrition_value`, `status`, `created_date`, `modify_date`) VALUES
 (1, 4, 'Calories', '104', 1, '2023-07-27 15:43:18', '2023-07-27 15:43:18'),
 (2, 4, 'Fat', '0.3g', 1, '2023-07-27 15:43:18', '2023-07-27 15:43:18'),
-(3, 4, 'Sodium', '3mg', 2, '2023-07-27 16:06:59', '2023-07-27 16:09:58');
+(3, 4, 'Sodium', '3mg', 2, '2023-07-27 16:06:59', '2023-07-27 16:09:58'),
+(4, 5, 'Calories', '89', 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(5, 5, 'Fat', '0.3g', 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(6, 5, 'Water', '75%', 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(7, 5, 'Protein', '1.1g', 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(8, 5, 'Carbs', '22.8g', 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(9, 5, 'Sugar', '12.2g', 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(10, 5, 'Fiber', '2.6g', 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(11, 6, 'Calories', '94.6', 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(12, 6, 'Fat', '0.3g', 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(13, 6, 'Water', '156g', 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(14, 6, 'Protein', '0.43g', 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(15, 6, 'Carbs', '25.1g', 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(16, 6, 'Sugar', '18.9g', 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(17, 6, 'Fiber', '4.37g', 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(18, 7, 'Calories', '66.6', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(19, 7, 'Fat', '0.2g', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(20, 7, 'Water', '86%', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(21, 7, 'Protein', '1.3g', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(22, 7, 'Carbs', '14.8g', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(23, 7, 'Sugar', '12g', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(24, 7, 'Fiber', '0.2g', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(25, 7, 'Vitamin C', '92% of the Daily Value (DV)', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(26, 7, 'Folate', '9% of the DV', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(27, 7, 'Calcium', '5% of the DV', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(28, 7, 'Potassium', '5% of the DV', 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(29, 8, 'Calories', '217', 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(30, 8, 'Fat', '11.8g', 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(31, 8, 'Water', '61%', 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(32, 8, 'Protein', '26.1g', 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(33, 8, 'Carbs', '0g', 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(34, 8, 'Sugar', '0g', 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(35, 8, 'Fiber', '0g', 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(36, 9, 'Calories', '284', 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(37, 9, 'Fat', '6.2g', 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(38, 9, 'Water', '61%', 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(39, 9, 'Protein', '53.4g', 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(40, 9, 'Carbs', '0g', 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(41, 9, 'Sugar', '0g', 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(42, 9, 'Fiber', '0g', 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(43, 10, 'Calories', '31', 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(44, 10, 'Fat', '0.3g', 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(45, 10, 'Water', '92%', 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(46, 10, 'Protein', '1g', 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(47, 10, 'Carbs', '6g', 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(48, 10, 'Sugar', '4.2g', 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(49, 10, 'Fiber', '2.1g', 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(50, 11, 'Calories', '9', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(51, 11, 'Fat', '0g', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(52, 11, 'Protein', '0.2g', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(53, 11, 'Carbs', '2g', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(54, 11, 'Sugar', '0.2g', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(55, 11, 'Fiber', '0.2g', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(56, 11, 'Sodium', '1.4mg', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(57, 11, 'Magnesium', '4.7mg', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(58, 11, 'Potassium', '45.6mg', 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32'),
+(59, 12, 'Calories', '4.5', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23'),
+(60, 12, 'Fat', '0g', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23'),
+(61, 12, 'Protein', '0.2g', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23'),
+(62, 12, 'Carbs', '1g', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23'),
+(63, 12, 'Sugar', '0g', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23'),
+(64, 12, 'Fiber', '0.1g', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23'),
+(65, 12, 'Sodium', '0.5mg', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23'),
+(66, 12, 'Zinc', '0.04mg', 1, '2023-07-31 10:22:23', '2023-07-31 10:22:23');
 
 -- --------------------------------------------------------
 
@@ -224,6 +296,14 @@ CREATE TABLE `offer_detail` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `offer_detail`
+--
+
+INSERT INTO `offer_detail` (`offer_id`, `prod_id`, `price`, `start_date`, `end_date`, `status`, `created_date`, `modify_date`) VALUES
+(1, 5, 2.49, '2023-07-31 00:00:00', '2023-08-30 00:00:00', 1, '2023-07-31 10:58:27', '2023-07-31 10:59:54'),
+(2, 6, 1.49, '2023-07-31 00:00:00', '2023-08-30 00:00:00', 1, '2023-07-31 10:59:08', '2023-07-31 10:59:08');
 
 -- --------------------------------------------------------
 
@@ -293,10 +373,13 @@ CREATE TABLE `product_detail` (
 --
 
 INSERT INTO `product_detail` (`prod_id`, `cat_id`, `brand_id`, `type_id`, `name`, `detail`, `unit_name`, `unit_value`, `nutrition_weight`, `price`, `status`, `created_date`, `modify_date`) VALUES
-(1, 1, 1, 1, 'Red Apple', 'ABCASDAD ASDASDASDSD', 'kg', '1', '200g', 2.99, 2, '2023-07-27 15:40:18', '2023-07-27 16:05:49'),
-(2, 1, 1, 1, 'Red Apple', 'ABCASDAD ASDASDASDSD', 'kg', '1', '200g', 2.99, 1, '2023-07-27 15:41:33', '2023-07-27 15:41:33'),
-(3, 1, 1, 1, 'Red Apple', 'ABCASDAD ASDASDASDSD', 'kg', '1', '200g', 2.99, 1, '2023-07-27 15:42:14', '2023-07-27 15:42:14'),
-(4, 1, 1, 1, 'Red Apple', 'ABCASDAD ASDASDASDSD', 'kg', '1', '100g', 2.99, 1, '2023-07-27 15:43:18', '2023-07-27 16:05:04');
+(5, 1, 1, 1, 'Organic Banana', 'banana, fruit of the genus Musa, of the family Musaceae, one of the most important fruit crops of the world. The banana is grown in the tropics, and, though it is most widely consumed in those regions, it is valued worldwide for its flavour, nutritional value, and availability throughout the year', 'pcs', '7', '200g', 2.99, 1, '2023-07-31 09:47:35', '2023-07-31 09:47:35'),
+(6, 1, 1, 1, 'Red Apple', 'Apples contain key nutrients, including fiber and antioxidants. They may offer health benefits, including lowering blood sugar levels and benefitting heart health.', 'kg', '1', '182g', 1.99, 1, '2023-07-31 09:51:36', '2023-07-31 09:51:36'),
+(7, 1, 1, 1, 'Oranges', 'Many types of oranges are high in fiber and beneficial vitamins, like vitamin C. They also contain antioxidants which can have various health benefits, including supporting immune function.', 'kg', '1', '140g', 0.99, 1, '2023-07-31 09:58:17', '2023-07-31 09:58:17'),
+(8, 3, 1, 1, 'Beef Bone', 'When consumed in moderation, beef can improve muscle growth and maintenance. It’s also rich in iron and zinc. But high consumption of beef has been linked to an increased risk for heart disease and cancer.', 'kg', '1', '100g', 3.99, 1, '2023-07-31 10:10:09', '2023-07-31 10:10:09'),
+(9, 3, 1, 1, 'Broiler Chicken', 'When consumed in moderation, beef can improve muscle growth and maintenance. It’s also rich in iron and zinc. But high consumption of beef has been linked to an increased risk for heart disease and cancer.', 'kg', '1', '100g', 3.99, 1, '2023-07-31 10:11:55', '2023-07-31 10:11:55'),
+(10, 1, 1, 1, 'Bell Peppers', 'Bell peppers (Capsicum annuum) are fruits that belong to the nightshade family. They are low in calories and rich in vitamin C and other antioxidants, making them an excellent addition to a healthy diet.', 'gm', '250', '100g', 1.99, 1, '2023-07-31 10:14:09', '2023-07-31 10:14:09'),
+(11, 1, 1, 1, 'Ginger', 'Ginger may have numerous health benefits due to its anti-inflammatory, anti-nausea, and other properties. It may help you lose weight, manage arthritis, reduce menstrual symptoms, and more.', 'gm', '250', '11g', 2.99, 1, '2023-07-31 10:18:32', '2023-07-31 10:18:32');
 
 -- --------------------------------------------------------
 
@@ -353,7 +436,9 @@ CREATE TABLE `type_detail` (
 --
 
 INSERT INTO `type_detail` (`type_id`, `type_name`, `image`, `color`, `status`, `created_date`, `modify_date`) VALUES
-(1, 'Pulses', 'type/202307261610181018aVOpgmY1W1.png', 'F8A44C', 1, '2023-07-26 16:10:18', '2023-07-26 16:12:39');
+(1, 'Pulses', 'type/202307261610181018aVOpgmY1W1.png', 'F8A44C', 1, '2023-07-26 16:10:18', '2023-07-26 16:12:39'),
+(2, 'Pulses', 'type/202307310959535953siLWeCJ71I.png', 'F8A44C', 2, '2023-07-31 09:59:53', '2023-07-31 09:59:53'),
+(3, 'Rice', 'type/202307311000160168a0737aEiC.png', '53B175', 1, '2023-07-31 10:00:16', '2023-07-31 10:00:16');
 
 -- --------------------------------------------------------
 
@@ -385,7 +470,8 @@ CREATE TABLE `user_detail` (
 
 INSERT INTO `user_detail` (`user_id`, `username`, `user_type`, `name`, `email`, `mobile`, `mobile_code`, `password`, `area_id`, `auth_token`, `dervice_token`, `reset_code`, `status`, `created_date`, `modify_date`) VALUES
 (1, 'admin', 2, 'admin', 'admin@admin.com', '', '', '', 0, 'L3ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-26 14:57:59', '2023-07-26 14:57:59'),
-(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'L2ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-25 10:57:32', '2023-07-25 10:57:45');
+(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'zNrfu15VXE2dZWHmCtu8', '', '0000', 1, '2023-07-25 10:57:32', '2023-07-31 09:41:06'),
+(5, 'User1', 1, '', 'user1@gmail.com', '', '', '123456', 0, 'pJYFk5XGrCrGZl92K5qu', '', '0000', 1, '2023-07-29 16:55:36', '2023-07-29 16:55:36');
 
 -- --------------------------------------------------------
 
@@ -553,7 +639,7 @@ ALTER TABLE `cart_detail`
 -- AUTO_INCREMENT for table `category_detail`
 --
 ALTER TABLE `category_detail`
-  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `favorite_detail`
@@ -565,7 +651,7 @@ ALTER TABLE `favorite_detail`
 -- AUTO_INCREMENT for table `image_detail`
 --
 ALTER TABLE `image_detail`
-  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `notification_detail`
@@ -577,13 +663,13 @@ ALTER TABLE `notification_detail`
 -- AUTO_INCREMENT for table `nutrition_detail`
 --
 ALTER TABLE `nutrition_detail`
-  MODIFY `nutrition_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `nutrition_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `offer_detail`
 --
 ALTER TABLE `offer_detail`
-  MODIFY `offer_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `offer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `order_detail`
@@ -601,7 +687,7 @@ ALTER TABLE `order_payment_detail`
 -- AUTO_INCREMENT for table `product_detail`
 --
 ALTER TABLE `product_detail`
-  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `promo_code_detail`
@@ -619,13 +705,13 @@ ALTER TABLE `review_detail`
 -- AUTO_INCREMENT for table `type_detail`
 --
 ALTER TABLE `type_detail`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_detail`
 --
 ALTER TABLE `user_detail`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `zone_detail`

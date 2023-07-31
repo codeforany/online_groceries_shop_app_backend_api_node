@@ -643,74 +643,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "product_list",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "access_token",
-										"value": "L3ROzNF2KBvQ07o0D4qi",
-										"type": "default"
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": []
-								},
-								"url": {
-									"raw": "http://localhost:3001/api/admin/product_list",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3001",
-									"path": [
-										"api",
-										"admin",
-										"product_list"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "product_detail",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "access_token",
-										"value": "L3ROzNF2KBvQ07o0D4qi",
-										"type": "default"
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "prod_id",
-											"value": "4",
-											"type": "default"
-										}
-									]
-								},
-								"url": {
-									"raw": "http://localhost:3001/api/admin/product_detail",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3001",
-									"path": [
-										"api",
-										"admin",
-										"product_detail"
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				},
@@ -1319,6 +1251,201 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "product_list",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/product_list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"product_list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "product_detail",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "prod_id",
+											"value": "4",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/product_detail",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"product_detail"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "offer",
+					"item": [
+						{
+							"name": "offer_add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "prod_id",
+											"value": "big",
+											"type": "default"
+										},
+										{
+											"key": "price",
+											"value": "",
+											"type": "default"
+										},
+										{
+											"key": "start_date",
+											"value": "",
+											"description": "yyyy-mm-dd hh:mm:ss",
+											"type": "default"
+										},
+										{
+											"key": "end_date",
+											"value": "",
+											"description": "yyyy-mm-dd hh:mm:ss",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/offer_add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"offer_add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "offer_delete",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "offer_id",
+											"value": "1",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/offer_delete",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"offer_delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "offer_list",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/offer_list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"offer_list"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -1374,7 +1501,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/api/login",
+							"raw": "http://localhost:3001/api/app/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1382,7 +1509,7 @@
 							"port": "3001",
 							"path": [
 								"api",
-								"api",
+								"app",
 								"login"
 							]
 						}
@@ -1430,6 +1557,70 @@
 								"api",
 								"app",
 								"sign_up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "home",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "pJYFk5XGrCrGZl92K5qu",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/api/app/home",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"home"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product_detail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "pJYFk5XGrCrGZl92K5qu",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prod_id",
+									"value": "5",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/product_detail",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"product_detail"
 							]
 						}
 					},
