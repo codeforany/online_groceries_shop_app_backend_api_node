@@ -30,6 +30,7 @@ Order Tracking: Track your orders for better convenience.
 - [Youtube Video - 3: Build an Online Groceries Shop App | Node.js Express REST API | Product Management & Admin APIs ](https://youtu.be/9CUk-CJC9Uc)
 - [Youtube Video - 4: Zone/Area Management APIs ](https://youtu.be/ifAlKg9p4Wk)
 - [Youtube Video - 5: Admin APIs Product Offer Api & App APIs Home Screen , Product Details Api ](https://youtu.be/1mEsFL_G6ZI)
+- [Youtube Video - 6: App APIs Favorite Operations & Explore Screen APIs ](https://youtu.be/y3XPzlkwAu4)
 
 ## Node.js Express Js Api Base Setup With MySQL & Socket.io
 - [Youtube Full Playlist: Node.js Express Js With REST Api & Socket.io Api ](https://www.youtube.com/playlist?list=PLzcRC7PA0xWRlYXalCqTqoC6csqUIJWCa)
