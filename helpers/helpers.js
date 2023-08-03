@@ -9,7 +9,7 @@ const msg_server_internal_error = "Server Internal Error"
 module.exports = {
 
     ImagePath: () => {
-        return "http://192.168.1.2:3001/img/";
+        return "http://192.168.1.3:3001/img/";
     },
 
     ThrowHtmlError: (err, res) => {
