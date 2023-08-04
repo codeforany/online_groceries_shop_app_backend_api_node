@@ -1625,6 +1625,304 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "add_remove_favorite",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "7Ux0Xbknc7Xi7AGWgrVX",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prod_id",
+									"value": "5",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/add_remove_favorite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"add_remove_favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "favorite_list",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "j0JrTIsOgbCiLhR3UsYy",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/favorite_list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"favorite_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "explore_category_list",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "pJYFk5XGrCrGZl92K5qu",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/explore_category_list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"explore_category_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "explore_category_items_list",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "pJYFk5XGrCrGZl92K5qu",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "cat_id",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/explore_category_items_list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"explore_category_items_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_to_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "g0mtdJJqF9Xn7iDjQmNN",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prod_id",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "qty",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/add_to_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"add_to_cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cart_list",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "g0mtdJJqF9Xn7iDjQmNN",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/cart_list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"cart_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "g0mtdJJqF9Xn7iDjQmNN",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "cart_id",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "prod_id",
+									"value": "5",
+									"type": "default"
+								},
+								{
+									"key": "new_qty",
+									"value": "5",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/update_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"update_cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "g0mtdJJqF9Xn7iDjQmNN",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "cart_id",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "prod_id",
+									"value": "5",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/remove_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"remove_cart"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
