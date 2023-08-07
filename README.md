@@ -31,6 +31,8 @@ Order Tracking: Track your orders for better convenience.
 - [Youtube Video - 4: Zone/Area Management APIs ](https://youtu.be/ifAlKg9p4Wk)
 - [Youtube Video - 5: Admin APIs Product Offer Api & App APIs Home Screen , Product Details Api ](https://youtu.be/1mEsFL_G6ZI)
 - [Youtube Video - 6: App APIs Favorite Operations & Explore Screen APIs ](https://youtu.be/y3XPzlkwAu4)
+- [Youtube Video - 7: App APIs Cart Management APIs ](https://youtu.be/POh4OQyplpQ)
+- [Youtube Video - 8: App APIs Delivery Address Add,Update,Remove,Mark Default And List APIs ](https://youtu.be/SQ-Bae-EoeU)
 
 ## Node.js Express Js Api Base Setup With MySQL & Socket.io
 - [Youtube Full Playlist: Node.js Express Js With REST Api & Socket.io Api ](https://www.youtube.com/playlist?list=PLzcRC7PA0xWRlYXalCqTqoC6csqUIJWCa)

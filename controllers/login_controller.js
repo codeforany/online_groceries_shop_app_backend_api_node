@@ -16,6 +16,9 @@ module.exports.controller = (app, io, socket_list) => {
     const msg_invalid_item = "invalid product item";
     const msg_add_to_item = "item added into cart successfully ";
     const msg_remove_to_cart = "item remove form cart successfully"
+    const msg_add_address = "address added successfully"
+    const msg_update_address = "address updated successfully"
+    const msg_remove_address = "address removed successfully"
 
     app.post('/api/app/login', (req, res) => {
         helper.Dlog(req.body);
@@ -387,33 +390,33 @@ module.exports.controller = (app, io, socket_list) => {
 
         checkAccessToken(req.headers, res, (userObj) => {
             helper.CheckParameterValid(res, reqObj, ["cart_id", "prod_id", "new_qty"], () => {
-               
-                        // Valid
-                        var status = "1"
 
-                        if (reqObj.new_qty == "0") {
-                            status = "2"
-                        }
-                        db.query("UPDATE `cart_detail` SET `qty`= ? , `status`= ?, `modify_date`= NOW() WHERE `cart_id` = ? AND `prod_id` = ? AND `user_id` = ? AND `status` = ? ", [reqObj.new_qty, status, reqObj.cart_id, reqObj.prod_id, userObj.user_id, "1" ], (err, result) => {
+                // Valid
+                var status = "1"
 
-                            if(err) {
-                                helper.ThrowHtmlError(err, res)
-                                return
-                            }
+                if (reqObj.new_qty == "0") {
+                    status = "2"
+                }
+                db.query("UPDATE `cart_detail` SET `qty`= ? , `status`= ?, `modify_date`= NOW() WHERE `cart_id` = ? AND `prod_id` = ? AND `user_id` = ? AND `status` = ? ", [reqObj.new_qty, status, reqObj.cart_id, reqObj.prod_id, userObj.user_id, "1"], (err, result) => {
 
-                            if(result.affectedRows > 0) {
-                                res.json({
-                                    "status": "1",
-                                    "message": msg_success
-                                })
-                            }else{
-                                res.json({
-                                    "status": "0",
-                                    "message": msg_fail
-                                })
-                            }
-                        } )
-                   
+                    if (err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1",
+                            "message": msg_success
+                        })
+                    } else {
+                        res.json({
+                            "status": "0",
+                            "message": msg_fail
+                        })
+                    }
+                })
+
             })
         })
     })
@@ -425,8 +428,8 @@ module.exports.controller = (app, io, socket_list) => {
         checkAccessToken(req.headers, res, (userObj) => {
             helper.CheckParameterValid(res, reqObj, ["cart_id", "prod_id"], () => {
 
-               
-                db.query("UPDATE `cart_detail` SET `status`= '2', `modify_date`= NOW() WHERE `cart_id` = ? AND `prod_id` = ? AND  `user_id` = ? AND  `status` = ? ", [ reqObj.cart_id, reqObj.prod_id, userObj.user_id, "1"], (err, result) => {
+
+                db.query("UPDATE `cart_detail` SET `status`= '2', `modify_date`= NOW() WHERE `cart_id` = ? AND `prod_id` = ? AND  `user_id` = ? AND  `status` = ? ", [reqObj.cart_id, reqObj.prod_id, userObj.user_id, "1"], (err, result) => {
 
                     if (err) {
                         helper.ThrowHtmlError(err, res)
@@ -484,16 +487,146 @@ module.exports.controller = (app, io, socket_list) => {
         })
     })
 
+    app.post('/api/app/add_delivery_address', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["name", "type_name", "phone", "address", "city", "state", "postal_code"], () => {
+                db.query("INSERT INTO `address_detail`(`user_id`, `name`, `phone`, `address`, `city`, `state`, `type_name`, `postal_code`) VALUES (?,?,?, ?,?,?, ?,?) ", [userObj.user_id, reqObj.name, reqObj.phone, reqObj.address, reqObj.city, reqObj.state, reqObj.type_name, reqObj.postal_code], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return
+                    }
+
+                    if (result) {
+                        res.json({
+                            "status": "1",
+                            "message": msg_add_address
+                        })
+                    } else {
+                        res.json({
+                            "status": "0",
+                            "message": msg_fail
+                        })
+                    }
+                })
+            })
+        })
+    })
+
+    app.post('/api/app/update_delivery_address', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["address_id", "name", "type_name", "phone", "address", "city", "state", "postal_code"], () => {
+                db.query("UPDATE `address_detail` SET `name`=? ,`phone`=? ,`address`=? ,`city`=? ,`state`=? ,`type_name`=? ,`postal_code`=?, `modify_date`= NOW() WHERE `user_id` = ? AND `address_id` = ? AND `status` = 1 ", [reqObj.name, reqObj.phone, reqObj.address, reqObj.city, reqObj.state, reqObj.type_name, reqObj.postal_code, userObj.user_id, reqObj.address_id], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1",
+                            "message": msg_update_address
+                        })
+                    } else {
+                        res.json({
+                            "status": "0",
+                            "message": msg_fail
+                        })
+                    }
+                })
+            })
+        })
+    })
+
+    app.post('/api/app/delete_delivery_address', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["address_id"], () => {
+                db.query("UPDATE `address_detail` SET  `status`=2, `modify_date`= NOW() WHERE `user_id` = ? AND `address_id` = ? AND `status` = 1 ", [userObj.user_id, reqObj.address_id], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1",
+                            "message": msg_remove_address
+                        })
+                    } else {
+                        res.json({
+                            "status": "0",
+                            "message": msg_fail
+                        })
+                    }
+                })
+            })
+        })
+    })
+
+    app.post('/api/app/mark_default_delivery_address', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["address_id"], () => {
+                db.query("UPDATE `address_detail` SET `is_default` = (CASE WHEN `address_id` = ? THEN 1 ELSE 0 END) , `modify_date`= NOW() WHERE `user_id` = ? AND `status` = 1 ", [reqObj.address_id, userObj.user_id], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1",
+                            "message": msg_success
+                        })
+                    } else {
+                        res.json({
+                            "status": "0",
+                            "message": msg_fail
+                        })
+                    }
+                })
+            })
+        })
+    })
+
+    app.post('/api/app/delivery_address', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+        checkAccessToken(req.headers, res, (userObj) => {
+
+            db.query("SELECT `address_id`, `name`, `phone`, `address`, `city`, `state`, `type_name`, `postal_code`, `is_default` FROM `address_detail` WHERE `user_id` = ? AND `status` = 1 ", [userObj.user_id], (err, result) => {
+                if (err) {
+                    helper.ThrowHtmlError(err, res);
+                    return
+                }
+
+                res.json({
+                    "status": "1",
+                    "payload": result,
+                    "message": msg_success
+                })
+            })
+
+        })
+    })
+
 
 
     function getProductDetail(res, prod_id, user_id) {
-        db.query("SELECT `pd`.`prod_id`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, ( CASE WHEN `fd`.`fav_id` IS NOT NULL THEN 1 ELSE 0 END ) AS `is_fav` , IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, IFNULL(`od`.`price`, `pd`.`price` ) as `offer_price`, IFNULL(`od`.`start_date`,'') as `start_date`, IFNULL(`od`.`end_date`,'') as `end_date`, (CASE WHEN `od`.`offer_id` IS NOT NULL THEN 1 ELSE 0 END) AS `is_offer_active` FROM `product_detail` AS  `pd` " +
+        db.query("SELECT `pd`.`prod_id`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, ( CASE WHEN `fd`.`fav_id` IS NOT NULL THEN 1 ELSE 0 END ) AS `is_fav` , IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, IFNULL(`od`.`price`, `pd`.`price` ) as `offer_price`, (CASE WHEN `imd`.`image` != '' THEN  CONCAT( '" + image_base_url + "' ,'', `imd`.`image` ) ELSE '' END) AS `image`, IFNULL(`od`.`start_date`,'') as `start_date`, IFNULL(`od`.`end_date`,'') as `end_date`, (CASE WHEN `od`.`offer_id` IS NOT NULL THEN 1 ELSE 0 END) AS `is_offer_active` FROM `product_detail` AS  `pd` " +
             "INNER JOIN `category_detail` AS `cd` ON `pd`.`cat_id` = `cd`.`cat_id` " +
+            "INNER JOIN `image_detail` AS `imd` ON `pd`.`prod_id` = `imd`.`prod_id` AND `imd`.`status` = 1 " +
             "LEFT JOIN  `favorite_detail` AS `fd` ON  `pd`.`prod_id` = `fd`.`prod_id` AND `fd`.`user_id` = ? AND `fd`.`status`=  1 " +
             "LEFT JOIN `brand_detail` AS `bd` ON `pd`.`brand_id` = `bd`.`brand_id` " +
             "LEFT JOIN `offer_detail` AS `od` ON `pd`.`prod_id` = `od`.`prod_id` AND `od`.`status` = 1 AND `od`.`start_date` <= NOW() AND `od`.`end_date` >= NOW() " +
             "INNER JOIN `type_detail` AS `td` ON `pd`.`type_id` = `td`.`type_id` " +
-            " WHERE `pd`.`status` = ? AND `pd`.`prod_id` = ? ; " +
+            " WHERE `pd`.`status` = ? AND `pd`.`prod_id` = ? GROUP BY `pd`.`prod_id`; " +
 
             " SELECT `nutrition_id`, `prod_id`, `nutrition_name`, `nutrition_value` FROM `nutrition_detail` WHERE `prod_id` = ? AND `status` = ? ORDER BY `nutrition_name`;" +
 

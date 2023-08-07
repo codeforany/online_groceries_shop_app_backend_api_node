@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 31, 2023 at 08:24 AM
+-- Generation Time: Aug 07, 2023 at 07:10 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.0
 
@@ -29,17 +29,27 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `address_detail` (
   `address_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT 0,
   `name` varchar(50) NOT NULL DEFAULT '',
   `phone` varchar(20) NOT NULL DEFAULT '',
   `address` varchar(200) NOT NULL DEFAULT '',
   `city` varchar(75) NOT NULL DEFAULT '',
   `state` varchar(75) NOT NULL DEFAULT '',
+  `type_name` varchar(50) NOT NULL DEFAULT '',
   `postal_code` varchar(20) NOT NULL DEFAULT '',
   `is_default` int(1) NOT NULL DEFAULT 0,
   `status` int(1) NOT NULL DEFAULT 1,
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `address_detail`
+--
+
+INSERT INTO `address_detail` (`address_id`, `user_id`, `name`, `phone`, `address`, `city`, `state`, `type_name`, `postal_code`, `is_default`, `status`, `created_date`, `modify_date`) VALUES
+(1, 2, 'CodeForAny', '9876543211', 'home, near by location1', 'surat1', 'gujarat1', 'Home1', '987654', 0, 1, '2023-08-07 10:33:23', '2023-08-07 10:39:24'),
+(2, 2, 'CodeForAny2', '98765432102', 'home, near by location2', 'surat', 'gujarat', 'Home2', '987654', 1, 1, '2023-08-07 10:38:58', '2023-08-07 10:39:24');
 
 -- --------------------------------------------------------
 
@@ -104,6 +114,14 @@ CREATE TABLE `cart_detail` (
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `cart_detail`
+--
+
+INSERT INTO `cart_detail` (`cart_id`, `user_id`, `prod_id`, `qty`, `status`, `created_date`, `modify_date`) VALUES
+(1, 2, 5, 0, 2, '2023-08-06 16:50:58', '2023-08-06 16:53:08'),
+(2, 2, 6, 1, 2, '2023-08-06 16:52:48', '2023-08-06 16:54:53');
+
 -- --------------------------------------------------------
 
 --
@@ -146,6 +164,17 @@ CREATE TABLE `favorite_detail` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `favorite_detail`
+--
+
+INSERT INTO `favorite_detail` (`fav_id`, `prod_id`, `user_id`, `status`, `created_date`, `modify_date`) VALUES
+(1, 5, 5, 1, '2023-08-02 15:19:57', '2023-08-02 15:19:57'),
+(9, 10, 2, 1, '2023-08-03 00:57:23', '2023-08-03 00:57:23'),
+(11, 6, 2, 1, '2023-08-06 17:19:23', '2023-08-06 17:19:23'),
+(12, 5, 2, 1, '2023-08-06 19:09:56', '2023-08-06 19:09:56'),
+(13, 7, 2, 1, '2023-08-06 19:15:55', '2023-08-06 19:15:55');
 
 -- --------------------------------------------------------
 
@@ -470,8 +499,10 @@ CREATE TABLE `user_detail` (
 
 INSERT INTO `user_detail` (`user_id`, `username`, `user_type`, `name`, `email`, `mobile`, `mobile_code`, `password`, `area_id`, `auth_token`, `dervice_token`, `reset_code`, `status`, `created_date`, `modify_date`) VALUES
 (1, 'admin', 2, 'admin', 'admin@admin.com', '', '', '', 0, 'L3ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-26 14:57:59', '2023-07-26 14:57:59'),
-(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'zNrfu15VXE2dZWHmCtu8', '', '0000', 1, '2023-07-25 10:57:32', '2023-07-31 09:41:06'),
-(5, 'User1', 1, '', 'user1@gmail.com', '', '', '123456', 0, 'pJYFk5XGrCrGZl92K5qu', '', '0000', 1, '2023-07-29 16:55:36', '2023-07-29 16:55:36');
+(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'Xm6Y67jto6aQmN7wwkQ6', '', '0000', 1, '2023-07-25 10:57:32', '2023-08-07 07:18:50'),
+(5, 'User1', 1, '', 'user1@gmail.com', '', '', '123456', 0, 'pJYFk5XGrCrGZl92K5qu', '', '0000', 1, '2023-07-29 16:55:36', '2023-07-29 16:55:36'),
+(6, 'user1', 1, '', 'user2@gmail.com', '', '', '123456', 0, 'g0mtdJJqF9Xn7iDjQmNN', '', '0000', 1, '2023-08-02 11:01:46', '2023-08-02 11:01:46'),
+(7, 'user6', 1, '', 'test7@gmail.com', '', '', '123456', 0, 'hNytj5vmrr9DmzaSXsyw', '', '0000', 1, '2023-08-02 11:33:19', '2023-08-06 23:42:01');
 
 -- --------------------------------------------------------
 
@@ -615,7 +646,7 @@ ALTER TABLE `zone_detail`
 -- AUTO_INCREMENT for table `address_detail`
 --
 ALTER TABLE `address_detail`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `area_detail`
@@ -633,7 +664,7 @@ ALTER TABLE `brand_detail`
 -- AUTO_INCREMENT for table `cart_detail`
 --
 ALTER TABLE `cart_detail`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `category_detail`
@@ -645,7 +676,7 @@ ALTER TABLE `category_detail`
 -- AUTO_INCREMENT for table `favorite_detail`
 --
 ALTER TABLE `favorite_detail`
-  MODIFY `fav_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `fav_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `image_detail`
@@ -711,7 +742,7 @@ ALTER TABLE `type_detail`
 -- AUTO_INCREMENT for table `user_detail`
 --
 ALTER TABLE `user_detail`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `zone_detail`
