@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 07, 2023 at 07:10 AM
+-- Generation Time: Aug 08, 2023 at 06:39 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.0
 
@@ -48,8 +48,10 @@ CREATE TABLE `address_detail` (
 --
 
 INSERT INTO `address_detail` (`address_id`, `user_id`, `name`, `phone`, `address`, `city`, `state`, `type_name`, `postal_code`, `is_default`, `status`, `created_date`, `modify_date`) VALUES
-(1, 2, 'CodeForAny', '9876543211', 'home, near by location1', 'surat1', 'gujarat1', 'Home1', '987654', 0, 1, '2023-08-07 10:33:23', '2023-08-07 10:39:24'),
-(2, 2, 'CodeForAny2', '98765432102', 'home, near by location2', 'surat', 'gujarat', 'Home2', '987654', 1, 1, '2023-08-07 10:38:58', '2023-08-07 10:39:24');
+(1, 2, 'My Home', '9876543211', 'New Nat Stge Bldg, S Bapat Marg, Mahim', 'Mumbai', 'Maharashtra', 'Home', '400016', 0, 1, '2023-08-07 10:33:23', '2023-08-07 23:29:54'),
+(2, 2, 'My Home', '98765432102', '246/ A, Dhutpeshwar Bldg, Girgaon Road, Near Gai Wadi, Girgaon', 'Mumbai', 'Maharashtra', 'Home', '400004', 1, 1, '2023-08-07 10:38:58', '2023-08-07 23:29:00'),
+(3, 2, '1', '123', 'asd', 'asdasd', 'dsfsdfsf', 'Office', '987654123', 0, 2, '2023-08-07 23:15:27', '2023-08-07 23:17:23'),
+(4, 2, 'Office', '9875222', 'Shop 15, Dda Shopping Complex, Azadpur', 'Delhi', 'Delhi', 'Office', '110033', 0, 1, '2023-08-07 23:18:09', '2023-08-07 23:18:09');
 
 -- --------------------------------------------------------
 
@@ -120,7 +122,11 @@ CREATE TABLE `cart_detail` (
 
 INSERT INTO `cart_detail` (`cart_id`, `user_id`, `prod_id`, `qty`, `status`, `created_date`, `modify_date`) VALUES
 (1, 2, 5, 0, 2, '2023-08-06 16:50:58', '2023-08-06 16:53:08'),
-(2, 2, 6, 1, 2, '2023-08-06 16:52:48', '2023-08-06 16:54:53');
+(2, 2, 6, 1, 2, '2023-08-06 16:52:48', '2023-08-06 16:54:53'),
+(3, 2, 5, 1, 2, '2023-08-08 08:18:57', '2023-08-08 08:19:29'),
+(4, 2, 5, 3, 1, '2023-08-08 09:37:44', '2023-08-08 09:38:15'),
+(5, 2, 11, 1, 1, '2023-08-08 09:38:01', '2023-08-08 09:38:01'),
+(6, 2, 10, 3, 1, '2023-08-08 09:38:02', '2023-08-08 09:38:10');
 
 -- --------------------------------------------------------
 
@@ -419,6 +425,11 @@ INSERT INTO `product_detail` (`prod_id`, `cat_id`, `brand_id`, `type_id`, `name`
 CREATE TABLE `promo_code_detail` (
   `promo_code_id` int(11) NOT NULL,
   `code` varchar(20) NOT NULL DEFAULT '',
+  `title` varchar(200) NOT NULL DEFAULT '',
+  `description` varchar(5000) NOT NULL DEFAULT '',
+  `type` int(1) NOT NULL DEFAULT 1 COMMENT '1 = Per% , 2 = Fix Amount',
+  `min_order_amount` double NOT NULL DEFAULT 0,
+  `max_discount_amount` double NOT NULL DEFAULT 500,
   `offer_price` decimal(10,0) NOT NULL DEFAULT 0,
   `start_date` datetime NOT NULL DEFAULT current_timestamp(),
   `end_date` datetime NOT NULL DEFAULT current_timestamp(),
@@ -426,6 +437,13 @@ CREATE TABLE `promo_code_detail` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `promo_code_detail`
+--
+
+INSERT INTO `promo_code_detail` (`promo_code_id`, `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`, `status`, `created_date`, `modify_date`) VALUES
+(1, 'SAVE10', 'Save 10% more', 'Save 10% more', 1, 10, 50, '10', '2023-08-09 00:00:00', '2023-09-08 00:00:00', 2, '2023-08-08 08:57:31', '2023-08-08 09:16:31');
 
 -- --------------------------------------------------------
 
@@ -499,7 +517,7 @@ CREATE TABLE `user_detail` (
 
 INSERT INTO `user_detail` (`user_id`, `username`, `user_type`, `name`, `email`, `mobile`, `mobile_code`, `password`, `area_id`, `auth_token`, `dervice_token`, `reset_code`, `status`, `created_date`, `modify_date`) VALUES
 (1, 'admin', 2, 'admin', 'admin@admin.com', '', '', '', 0, 'L3ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-26 14:57:59', '2023-07-26 14:57:59'),
-(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'Xm6Y67jto6aQmN7wwkQ6', '', '0000', 1, '2023-07-25 10:57:32', '2023-08-07 07:18:50'),
+(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'BLZE1kRNy1jmVTb4Ar9r', '', '0000', 1, '2023-07-25 10:57:32', '2023-08-07 22:33:19'),
 (5, 'User1', 1, '', 'user1@gmail.com', '', '', '123456', 0, 'pJYFk5XGrCrGZl92K5qu', '', '0000', 1, '2023-07-29 16:55:36', '2023-07-29 16:55:36'),
 (6, 'user1', 1, '', 'user2@gmail.com', '', '', '123456', 0, 'g0mtdJJqF9Xn7iDjQmNN', '', '0000', 1, '2023-08-02 11:01:46', '2023-08-02 11:01:46'),
 (7, 'user6', 1, '', 'test7@gmail.com', '', '', '123456', 0, 'hNytj5vmrr9DmzaSXsyw', '', '0000', 1, '2023-08-02 11:33:19', '2023-08-06 23:42:01');
@@ -646,7 +664,7 @@ ALTER TABLE `zone_detail`
 -- AUTO_INCREMENT for table `address_detail`
 --
 ALTER TABLE `address_detail`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `area_detail`
@@ -664,7 +682,7 @@ ALTER TABLE `brand_detail`
 -- AUTO_INCREMENT for table `cart_detail`
 --
 ALTER TABLE `cart_detail`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `category_detail`
@@ -724,7 +742,7 @@ ALTER TABLE `product_detail`
 -- AUTO_INCREMENT for table `promo_code_detail`
 --
 ALTER TABLE `promo_code_detail`
-  MODIFY `promo_code_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `promo_code_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `review_detail`

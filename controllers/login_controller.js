@@ -616,6 +616,31 @@ module.exports.controller = (app, io, socket_list) => {
         })
     })
 
+    app.post('/api/app/promo_code_list', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            
+
+            db.query("SELECT `promo_code_id`, `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`, `created_date`, `modify_date` FROM `promo_code_detail` WHERE `start_date` <= NOW() AND `end_date` >= NOW()  AND `status` = 1 ORDER BY `start_date` ", [], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    res.json({
+                        'status': '1',
+                        'payload': result,
+                        'message': msg_success
+                    })
+                })
+
+            
+        }, "1")
+    })
+
 
 
     function getProductDetail(res, prod_id, user_id) {

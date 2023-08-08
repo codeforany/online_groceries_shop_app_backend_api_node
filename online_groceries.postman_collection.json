@@ -1448,6 +1448,202 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Promo Code",
+					"item": [
+						{
+							"name": "promo_code_add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "code",
+											"value": "SAVE10",
+											"type": "default"
+										},
+										{
+											"key": "title",
+											"value": "Save 10% more",
+											"type": "default"
+										},
+										{
+											"key": "start_date",
+											"value": "",
+											"description": "yyyy-mm-dd hh:mm:ss",
+											"type": "default"
+										},
+										{
+											"key": "end_date",
+											"value": "",
+											"description": "yyyy-mm-dd hh:mm:ss",
+											"type": "default"
+										},
+										{
+											"key": "description",
+											"value": "Save 10% more",
+											"type": "default"
+										},
+										{
+											"key": "type",
+											"value": "1",
+											"description": "1 = Per, 2 Fix",
+											"type": "default"
+										},
+										{
+											"key": "min_order_amount",
+											"value": "5",
+											"type": "default"
+										},
+										{
+											"key": "max_discount_amount",
+											"value": "50",
+											"type": "default"
+										},
+										{
+											"key": "offer_price",
+											"value": "10",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/promo_code_add",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"promo_code_add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "promo_code_list",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/promo_code_list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"promo_code_list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "promo_code_update",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "promo_code_id",
+											"value": "1",
+											"type": "default"
+										},
+										{
+											"key": "title",
+											"value": "Save 10% more",
+											"type": "default"
+										},
+										{
+											"key": "start_date",
+											"value": "2023-08-08 00:00:00",
+											"description": "yyyy-mm-dd hh:mm:ss",
+											"type": "default"
+										},
+										{
+											"key": "end_date",
+											"value": "2023-09-08 00:00:00",
+											"description": "yyyy-mm-dd hh:mm:ss",
+											"type": "default"
+										},
+										{
+											"key": "description",
+											"value": "Save 10% more",
+											"type": "default"
+										},
+										{
+											"key": "type",
+											"value": "1",
+											"description": "1 = Per, 2 Fix",
+											"type": "default"
+										},
+										{
+											"key": "min_order_amount",
+											"value": "10",
+											"type": "default"
+										},
+										{
+											"key": "max_discount_amount",
+											"value": "50",
+											"type": "default"
+										},
+										{
+											"key": "offer_price",
+											"value": "10",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/promo_code_update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"promo_code_update"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -1769,7 +1965,7 @@
 						"header": [
 							{
 								"key": "access_token",
-								"value": "g0mtdJJqF9Xn7iDjQmNN",
+								"value": "j0JrTIsOgbCiLhR3UsYy",
 								"type": "default"
 							}
 						],
@@ -1778,12 +1974,12 @@
 							"urlencoded": [
 								{
 									"key": "prod_id",
-									"value": "1",
+									"value": "5",
 									"type": "default"
 								},
 								{
 									"key": "qty",
-									"value": "",
+									"value": "1",
 									"type": "default"
 								}
 							]
@@ -1805,13 +2001,60 @@
 					"response": []
 				},
 				{
+					"name": "update_cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "j0JrTIsOgbCiLhR3UsYy",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prod_id",
+									"value": "5",
+									"type": "default"
+								},
+								{
+									"key": "new_qty",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "cart_id",
+									"value": "5",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/update_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"update_cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "cart_list",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "access_token",
-								"value": "g0mtdJJqF9Xn7iDjQmNN",
+								"value": "j0JrTIsOgbCiLhR3UsYy",
 								"type": "default"
 							}
 						],
@@ -1836,60 +2079,13 @@
 					"response": []
 				},
 				{
-					"name": "update_cart",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "access_token",
-								"value": "g0mtdJJqF9Xn7iDjQmNN",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "cart_id",
-									"value": "1",
-									"type": "default"
-								},
-								{
-									"key": "prod_id",
-									"value": "5",
-									"type": "default"
-								},
-								{
-									"key": "new_qty",
-									"value": "5",
-									"type": "default"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:3001/api/app/update_cart",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3001",
-							"path": [
-								"api",
-								"app",
-								"update_cart"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "remove_cart",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "access_token",
-								"value": "g0mtdJJqF9Xn7iDjQmNN",
+								"value": "j0JrTIsOgbCiLhR3UsYy",
 								"type": "default"
 							}
 						],
@@ -1898,12 +2094,12 @@
 							"urlencoded": [
 								{
 									"key": "cart_id",
-									"value": "1",
+									"value": "",
 									"type": "default"
 								},
 								{
 									"key": "prod_id",
-									"value": "5",
+									"value": "",
 									"type": "default"
 								}
 							]
@@ -1919,6 +2115,320 @@
 								"api",
 								"app",
 								"remove_cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_delivery_address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "Xm6Y67jto6aQmN7wwkQ6",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "CodeForAny2",
+									"type": "default"
+								},
+								{
+									"key": "type_name",
+									"value": "Home2",
+									"description": "Home, Office",
+									"type": "default"
+								},
+								{
+									"key": "phone",
+									"value": "98765432102",
+									"type": "default"
+								},
+								{
+									"key": "address",
+									"value": "home, near by location2",
+									"type": "default"
+								},
+								{
+									"key": "city",
+									"value": "surat",
+									"type": "default"
+								},
+								{
+									"key": "state",
+									"value": "gujarat",
+									"type": "default"
+								},
+								{
+									"key": "postal_code",
+									"value": "987654",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/add_delivery_address",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"add_delivery_address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_delivery_address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "Xm6Y67jto6aQmN7wwkQ6",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "CodeForAny",
+									"type": "default"
+								},
+								{
+									"key": "type_name",
+									"value": "Home1",
+									"description": "Home, Office",
+									"type": "default"
+								},
+								{
+									"key": "phone",
+									"value": "9876543211",
+									"type": "default"
+								},
+								{
+									"key": "address",
+									"value": "home, near by location1",
+									"type": "default"
+								},
+								{
+									"key": "city",
+									"value": "surat1",
+									"type": "default"
+								},
+								{
+									"key": "state",
+									"value": "gujarat1",
+									"type": "default"
+								},
+								{
+									"key": "postal_code",
+									"value": "987654",
+									"type": "default"
+								},
+								{
+									"key": "address_id",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/update_delivery_address",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"update_delivery_address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_delivery_address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "Xm6Y67jto6aQmN7wwkQ6",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "address_id",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/delete_delivery_address",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"delete_delivery_address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delivery_address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "Xm6Y67jto6aQmN7wwkQ6",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/delivery_address",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"delivery_address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mark_default_delivery_address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "Xm6Y67jto6aQmN7wwkQ6",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "address_id",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/mark_default_delivery_address",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"mark_default_delivery_address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "promo_code_list",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "BLZE1kRNy1jmVTb4Ar9r",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/promo_code_list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"promo_code_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "promo_code_delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "L3ROzNF2KBvQ07o0D4qi",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "promo_code_id",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/admin/promo_code_delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"admin",
+								"promo_code_delete"
 							]
 						}
 					},

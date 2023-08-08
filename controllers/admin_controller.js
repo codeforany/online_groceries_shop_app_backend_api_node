@@ -15,7 +15,6 @@ module.exports.controller = (app, io, socket_list) => {
     const msg_brand_added = "Brand added Successfully.";
     const msg_brand_update = "Brand updated Successfully.";
     const msg_brand_delete = "Brand deleted Successfully.";
-
     
 
     const msg_category_added = "Category added Successfully.";
@@ -49,6 +48,11 @@ module.exports.controller = (app, io, socket_list) => {
     const msg_offer_delete = "offer deleted Successfully.";
 
     const msg_already_added = "this value already added here";
+    const msg_added = "already added here";
+
+    const msg_promo_code_added = "promo code added Successfully.";
+    const msg_promo_code_update = "promo code updated Successfully.";
+    const msg_promo_code_delete = "promo code deleted Successfully.";
 
     app.post('/api/admin/brand_add', (req, res) => {
         helper.Dlog(req.body);
@@ -1312,6 +1316,138 @@ module.exports.controller = (app, io, socket_list) => {
         }, "2")
     })
 
+    app.post('/api/admin/promo_code_add', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["code", "title", "description", "type", "min_order_amount", "max_discount_amount", "offer_price", "start_date", "end_date" ], () => {
+                db.query("SELECT `promo_code_id` FROM `promo_code_detail` WHERE `code` = ? AND `status` = 1 ", [reqObj.code,], (err, result) => {
+                    if(err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    if(result.length > 0) {
+                        res.json({
+                            'status':'0',
+                            'message': msg_added
+                        })
+                    }else{
+                        db.query("INSERT INTO `promo_code_detail` ( `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`) VALUES (?,?,?, ?,?,?, ?,?,?)", [
+                            reqObj.code, reqObj.title, reqObj.description, reqObj.type, reqObj.min_order_amount, reqObj.max_discount_amount, reqObj.offer_price, reqObj.start_date, reqObj.end_date
+                        ], (err, result) => {
+
+                            if (err) {
+                                helper.ThrowHtmlError(err, res)
+                                return
+                            }
+
+                            if(result) {
+                                res.json({
+                                    'status': '1',
+                                    'message': msg_promo_code_added
+                                })
+                            }else{
+                                res.json({
+                                    'status': '0',
+                                    'message': msg_fail
+                                })
+                            }
+                        })
+                    }
+                })
+            } )
+        }, "2" )
+    })
+
+    app.post('/api/admin/promo_code_update', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["promo_code_id", "title", "description", "type", "min_order_amount", "max_discount_amount", "offer_price", "start_date", "end_date"], () => {
+               
+                db.query("UPDATE `promo_code_detail` SET `title`= ? ,`description`= ? ,`type`= ? ,`min_order_amount`= ? ,`max_discount_amount`= ? ,`offer_price`= ? ,`start_date`= ? ,`end_date`= ?, `modify_date` = NOW() WHERE `promo_code_id` = ? AND `start_date` >= NOW() AND `status` = 1 ", [
+                    reqObj.title, reqObj.description, reqObj.type, reqObj.min_order_amount, reqObj.max_discount_amount, reqObj.offer_price, reqObj.start_date, reqObj.end_date, reqObj.promo_code_id
+                        ], (err, result) => {
+
+                            if (err) {
+                                helper.ThrowHtmlError(err, res)
+                                return
+                            }
+
+                            if (result.affectedRows > 0) {
+                                res.json({
+                                    'status': '1',
+                                    'message': msg_promo_code_update
+                                })
+                            } else {
+                                res.json({
+                                    'status': '0',
+                                    'message': msg_fail
+                                })
+                            }
+                        })
+                   
+            })
+        }, "2")
+    })
+
+
+    app.post('/api/admin/promo_code_delete', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["promo_code_id"], () => {
+
+                db.query("UPDATE `promo_code_detail` SET `status`= 2 , `modify_date` = NOW() WHERE `promo_code_id` = ? AND `status` = 1 ", [reqObj.promo_code_id
+                ], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            'status': '1',
+                            'message': msg_promo_code_delete
+                        })
+                    } else {
+                        res.json({
+                            'status': '0',
+                            'message': msg_fail
+                        })
+                    }
+                })
+
+            })
+        }, "2")
+    })
+
+    
+    app.post('/api/admin/promo_code_list', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+                db.query("SELECT `promo_code_id`, `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`, `created_date`, `modify_date` FROM `promo_code_detail` WHERE `status` = 1 ORDER BY `promo_code_id` DESC ", [], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    res.json({
+                        'status': '1',
+                        'payload': result,
+                        'message': msg_success
+                    })
+                })
+        }, "2")
+    })
 
 
 }
