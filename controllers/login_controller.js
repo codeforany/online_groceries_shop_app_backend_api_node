@@ -20,6 +20,9 @@ module.exports.controller = (app, io, socket_list) => {
     const msg_update_address = "address updated successfully"
     const msg_remove_address = "address removed successfully"
 
+    const msg_add_payment_method = "payment method added successfully"
+    const msg_remove_payment_method = "payment method removed successfully"
+
     app.post('/api/app/login', (req, res) => {
         helper.Dlog(req.body);
         var reqObj = req.body;
@@ -621,27 +624,111 @@ module.exports.controller = (app, io, socket_list) => {
         var reqObj = req.body
 
         checkAccessToken(req.headers, res, (userObj) => {
-            
+
 
             db.query("SELECT `promo_code_id`, `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`, `created_date`, `modify_date` FROM `promo_code_detail` WHERE `start_date` <= NOW() AND `end_date` >= NOW()  AND `status` = 1 ORDER BY `start_date` ", [], (err, result) => {
 
-                    if (err) {
-                        helper.ThrowHtmlError(err, res)
-                        return
-                    }
+                if (err) {
+                    helper.ThrowHtmlError(err, res)
+                    return
+                }
 
-                    res.json({
-                        'status': '1',
-                        'payload': result,
-                        'message': msg_success
-                    })
+                res.json({
+                    'status': '1',
+                    'payload': result,
+                    'message': msg_success
                 })
+            })
 
-            
+
         }, "1")
     })
 
 
+
+    app.post('/api/app/add_payment_method', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["name", "card_number", "card_month", "card_year"], () => {
+                db.query("INSERT INTO `payment_method_detail` (`user_id`, `name`, `card_number`, `card_month`, `card_year`) VALUES (?,?,?, ?,? )", [
+                    userObj.user_id, reqObj.name, reqObj.card_number, reqObj.card_month, reqObj.card_year
+                ], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return
+                    }
+
+                    if (result) {
+                        res.json({
+                            "status": "1",
+                            "message": msg_add_payment_method
+                        })
+                    } else {
+                        res.json({
+                            "status": "1",
+                            "message": msg_fail
+                        })
+                    }
+                })
+            })
+        })
+    })
+
+    app.post('/api/app/remove_payment_method', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["pay_id"], () => {
+                db.query("UPDATE `payment_method_detail` SET `status`= 2 WHERE `pay_id` = ? AND `user_id` = ? AND `status` = 1 ", [
+                    reqObj.pay_id, userObj.user_id
+                ], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            "status": "1",
+                            "message": msg_remove_payment_method
+                        })
+                    } else {
+                        res.json({
+                            "status": "1",
+                            "message": msg_fail
+                        })
+                    }
+                })
+            })
+        })
+    })
+
+    app.post('/api/app/payment_method', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+
+        checkAccessToken(req.headers, res, (userObj) => {
+
+            db.query("SELECT `pay_id`, `name`, RIGHT( `card_number`, 4) AS `card_number` , `card_month`, `card_year` FROM `payment_method_detail` WHERE  `user_id` = ? AND `status` = 1 ", [
+                userObj.user_id
+            ], (err, result) => {
+                if (err) {
+                    helper.ThrowHtmlError(err, res);
+                    return
+                }
+
+                res.json({
+                    "status": "1",
+                    "payload": result,
+                    "message": msg_success
+                })
+            })
+
+        })
+    })
 
     function getProductDetail(res, prod_id, user_id) {
         db.query("SELECT `pd`.`prod_id`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, ( CASE WHEN `fd`.`fav_id` IS NOT NULL THEN 1 ELSE 0 END ) AS `is_fav` , IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, IFNULL(`od`.`price`, `pd`.`price` ) as `offer_price`, (CASE WHEN `imd`.`image` != '' THEN  CONCAT( '" + image_base_url + "' ,'', `imd`.`image` ) ELSE '' END) AS `image`, IFNULL(`od`.`start_date`,'') as `start_date`, IFNULL(`od`.`end_date`,'') as `end_date`, (CASE WHEN `od`.`offer_id` IS NOT NULL THEN 1 ELSE 0 END) AS `is_offer_active` FROM `product_detail` AS  `pd` " +

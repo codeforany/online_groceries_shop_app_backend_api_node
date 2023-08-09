@@ -1642,6 +1642,43 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "promo_code_delete",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "promo_code_id",
+											"value": "1",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/promo_code_delete",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"promo_code_delete"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -2398,13 +2435,13 @@
 					"response": []
 				},
 				{
-					"name": "promo_code_delete",
+					"name": "add_payment_method",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "access_token",
-								"value": "L3ROzNF2KBvQ07o0D4qi",
+								"value": "BLZE1kRNy1jmVTb4Ar9r",
 								"type": "default"
 							}
 						],
@@ -2412,14 +2449,29 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "promo_code_id",
-									"value": "1",
+									"key": "name",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "card_number",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "card_month",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "card_year",
+									"value": "",
 									"type": "default"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3001/api/admin/promo_code_delete",
+							"raw": "http://localhost:3001/api/app/add_payment_method",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2427,8 +2479,76 @@
 							"port": "3001",
 							"path": [
 								"api",
-								"admin",
-								"promo_code_delete"
+								"app",
+								"add_payment_method"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove_payment_method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "BLZE1kRNy1jmVTb4Ar9r",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "pay_id",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/remove_payment_method",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"remove_payment_method"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "payment_method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "BLZE1kRNy1jmVTb4Ar9r",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/payment_method",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"payment_method"
 							]
 						}
 					},

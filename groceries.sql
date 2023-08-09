@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 08, 2023 at 06:39 AM
+-- Generation Time: Aug 09, 2023 at 06:49 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.0
 
@@ -124,9 +124,21 @@ INSERT INTO `cart_detail` (`cart_id`, `user_id`, `prod_id`, `qty`, `status`, `cr
 (1, 2, 5, 0, 2, '2023-08-06 16:50:58', '2023-08-06 16:53:08'),
 (2, 2, 6, 1, 2, '2023-08-06 16:52:48', '2023-08-06 16:54:53'),
 (3, 2, 5, 1, 2, '2023-08-08 08:18:57', '2023-08-08 08:19:29'),
-(4, 2, 5, 3, 1, '2023-08-08 09:37:44', '2023-08-08 09:38:15'),
-(5, 2, 11, 1, 1, '2023-08-08 09:38:01', '2023-08-08 09:38:01'),
-(6, 2, 10, 3, 1, '2023-08-08 09:38:02', '2023-08-08 09:38:10');
+(4, 2, 5, 3, 2, '2023-08-08 09:37:44', '2023-08-08 10:12:44'),
+(5, 2, 11, 1, 2, '2023-08-08 09:38:01', '2023-08-08 10:12:45'),
+(6, 2, 10, 3, 2, '2023-08-08 09:38:02', '2023-08-08 10:12:47'),
+(7, 2, 5, 1, 2, '2023-08-08 10:13:04', '2023-08-08 11:45:08'),
+(8, 2, 6, 1, 2, '2023-08-08 10:13:06', '2023-08-08 11:45:09'),
+(9, 2, 6, 1, 2, '2023-08-08 10:13:08', '2023-08-08 10:13:14'),
+(10, 7, 5, 1, 2, '2023-08-08 11:18:33', '2023-08-08 11:31:27'),
+(11, 7, 5, 4, 2, '2023-08-08 11:19:31', '2023-08-08 11:44:17'),
+(12, 7, 6, 1, 2, '2023-08-08 11:19:55', '2023-08-08 11:37:50'),
+(13, 7, 7, 0, 2, '2023-08-08 11:21:24', '2023-08-08 11:32:58'),
+(14, 7, 5, 1, 2, '2023-08-08 11:46:21', '2023-08-08 11:47:03'),
+(15, 7, 5, 1, 2, '2023-08-08 11:47:08', '2023-08-08 11:47:13'),
+(16, 7, 5, 2, 1, '2023-08-08 11:50:56', '2023-08-08 11:59:41'),
+(17, 7, 6, 3, 1, '2023-08-08 11:51:03', '2023-08-08 11:51:03'),
+(18, 2, 5, 1, 1, '2023-08-08 11:53:14', '2023-08-08 11:53:14');
 
 -- --------------------------------------------------------
 
@@ -384,6 +396,32 @@ CREATE TABLE `order_payment_detail` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payment_method_detail`
+--
+
+CREATE TABLE `payment_method_detail` (
+  `pay_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `card_number` varchar(50) NOT NULL DEFAULT '',
+  `card_month` varchar(3) NOT NULL DEFAULT '',
+  `card_year` varchar(5) NOT NULL DEFAULT '',
+  `status` int(1) NOT NULL DEFAULT 1,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `modify_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `payment_method_detail`
+--
+
+INSERT INTO `payment_method_detail` (`pay_id`, `user_id`, `name`, `card_number`, `card_month`, `card_year`, `status`, `created_date`, `modify_date`) VALUES
+(1, 2, 'Card1', '4242424242424242', '12', '28', 1, '2023-08-09 10:10:43', '2023-08-09 10:10:43'),
+(2, 2, 'Card1', '4242424242424243', '12', '28', 1, '2023-08-09 10:11:55', '2023-08-09 10:11:55');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `product_detail`
 --
 
@@ -443,7 +481,8 @@ CREATE TABLE `promo_code_detail` (
 --
 
 INSERT INTO `promo_code_detail` (`promo_code_id`, `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`, `status`, `created_date`, `modify_date`) VALUES
-(1, 'SAVE10', 'Save 10% more', 'Save 10% more', 1, 10, 50, '10', '2023-08-09 00:00:00', '2023-09-08 00:00:00', 2, '2023-08-08 08:57:31', '2023-08-08 09:16:31');
+(1, 'CGREFILL', 'UPTO 90% OFF', 'Now Explore Premium Dry Fruits & Nuts At Happilo. Flat 34% Off On Order. No Minimum Purchase Criteria. Explore Various Types Of Nuts, Dried Fruits, Seeds, Berries, Family Packs, Combos And More Starting From Rs.99 Only. Just Click On the Link And Visit The Offer Page To Explore More', 1, 10, 50, '10', '2023-08-08 00:00:00', '2023-09-08 00:00:00', 1, '2023-08-08 08:57:31', '2023-08-08 09:16:31'),
+(2, 'ADREFILL', 'UPTO 50% OFF', 'Now Explore Premium Dry Fruits & Nuts At Happilo. Flat 34% Off On Order. No Minimum Purchase Criteria. Explore Various Types Of Nuts, Dried Fruits, Seeds, Berries, Family Packs, Combos And More Starting From Rs.99 Only. Just Click On the Link And Visit The Offer Page To Explore More', 1, 10, 50, '10', '2023-08-08 00:00:00', '2023-09-08 00:00:00', 1, '2023-08-08 08:57:31', '2023-08-08 09:16:31');
 
 -- --------------------------------------------------------
 
@@ -621,6 +660,12 @@ ALTER TABLE `order_payment_detail`
   ADD PRIMARY KEY (`transaction_id`);
 
 --
+-- Indexes for table `payment_method_detail`
+--
+ALTER TABLE `payment_method_detail`
+  ADD PRIMARY KEY (`pay_id`);
+
+--
 -- Indexes for table `product_detail`
 --
 ALTER TABLE `product_detail`
@@ -682,7 +727,7 @@ ALTER TABLE `brand_detail`
 -- AUTO_INCREMENT for table `cart_detail`
 --
 ALTER TABLE `cart_detail`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `category_detail`
@@ -733,6 +778,12 @@ ALTER TABLE `order_payment_detail`
   MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `payment_method_detail`
+--
+ALTER TABLE `payment_method_detail`
+  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `product_detail`
 --
 ALTER TABLE `product_detail`
@@ -742,7 +793,7 @@ ALTER TABLE `product_detail`
 -- AUTO_INCREMENT for table `promo_code_detail`
 --
 ALTER TABLE `promo_code_detail`
-  MODIFY `promo_code_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `promo_code_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `review_detail`
