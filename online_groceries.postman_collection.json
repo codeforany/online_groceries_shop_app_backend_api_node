@@ -2553,6 +2553,116 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "order_place",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "BLZE1kRNy1jmVTb4Ar9r",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "address_id",
+									"value": "2",
+									"type": "default"
+								},
+								{
+									"key": "payment_type",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "deliver_type",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "pay_id",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "promo_code_id",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/order_place",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"order_place"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order_payment_transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "BLZE1kRNy1jmVTb4Ar9r",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "order_payment_transaction",
+									"value": "4",
+									"type": "default"
+								},
+								{
+									"key": "payment_transaction_id",
+									"value": "2122312312313",
+									"type": "default"
+								},
+								{
+									"key": "payment_status",
+									"value": "1",
+									"description": "1 = success, 2 = fail",
+									"type": "default"
+								},
+								{
+									"key": "transaction_payload",
+									"value": "{\"status\":\"1\",\"payment_transaction_id\":\"2122312312313\" }",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/order_payment_transaction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"order_payment_transaction"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
