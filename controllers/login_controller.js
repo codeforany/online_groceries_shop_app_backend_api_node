@@ -463,12 +463,107 @@ module.exports.controller = (app, io, socket_list) => {
 
         checkAccessToken(req.headers, res, (userObj) => {
             getUserCart(res, userObj.user_id, (result, total) => {
-                res.json({
-                    "status": "1",
-                    "payload": result,
-                    "total": total.toFixed(2),
-                    "message": msg_success
-                })
+
+                var promo_code_id = reqObj.promo_code_id;
+                if(promo_code_id == undefined || promo_code_id == null) {
+                    promo_code_id = ""
+                }
+
+                var deliver_type = reqObj.deliver_type;
+                if (deliver_type == undefined || deliver_type == null) {
+                    deliver_type = "1"
+                }
+
+                db.query(
+                    'SELECT `promo_code_id`, `min_order_amount`, `max_discount_amount`, `offer_price` FROM `promo_code_detail` WHERE  `start_date` <= NOW() AND `end_date` >= NOW()  AND `status` = 1  AND `promo_code_id` = ? ;'
+                    , [ reqObj.promo_code_id], (err, pResult) => {
+                        if (err) {
+                            helper.ThrowHtmlError(err, res)
+                            return
+                        }
+
+
+
+                        var deliver_price_amount = 0.0
+
+                        if (deliver_type == "1") {
+                            deliver_price_amount = deliver_price
+                        } else {
+                            deliver_price_amount = 0.0;
+                        }
+
+
+                        var final_total = total
+                        var discountAmount = 0.0
+
+                        if (promo_code_id != "") {
+                            if (pResult.length > 0) {
+                                //Promo Code Apply & Valid
+
+                                if (final_total > pResult[0].min_order_amount) {
+
+                                    if (pResult[0].type == 2) {
+                                        // Fixed Discount
+                                        discountAmount = pResult[0].offer_price
+                                    } else {
+                                        //% Per
+
+                                        var disVal = final_total * (pResult[0].offer_price / 100)
+
+                                        helper.Dlog("disVal: " + disVal);
+
+                                        if (pResult[0].max_discount_amount <= disVal) {
+                                            //Max discount is more then disVal
+                                            discountAmount = pResult[0].max_discount_amount
+                                        } else {
+                                            //Max discount is Small then disVal
+                                            discountAmount = disVal
+                                        }
+                                    }
+
+
+                                } else {
+                                    res.json({
+                                        'status': "0",
+                                        "payload": result,
+                                        "total": total.toFixed(2),
+                                        "deliver_price_amount": deliver_price_amount.toFixed(2),
+                                        "discount_amount": 0,
+                                        "user_pay_price": (final_total + deliver_price_amount).toFixed(2),
+                                        'message': "Promo Code not apply need min order: $" + pResult[0].min_order_amount
+                                    })
+                                    return
+                                }
+
+                            } else {
+                                //Promo Code Apply not Valid
+                                res.json({
+                                    'status': "0",
+                                    "payload": result,
+                                    "total": total.toFixed(2),
+                                    "deliver_price_amount": deliver_price_amount.toFixed(2),
+                                    "discount_amount": 0,
+                                    "user_pay_price": (final_total + deliver_price_amount).toFixed(2),
+                                    'message': "Invalid Promo Code"
+                                })
+                                return
+                            }
+                        }
+
+                        var user_pay_price = final_total + deliver_price_amount + - discountAmount;
+                        res.json({
+                            "status": "1",
+                            "payload": result,
+                            "total": total.toFixed(2),
+                            "deliver_price_amount": deliver_price_amount.toFixed(2),
+                            "discount_amount": discountAmount.toFixed(2),
+                            "user_pay_price": user_pay_price.toFixed(2),
+                            "message": msg_success
+                        })
+
+                    })
+
+               
             })
         })
     })
@@ -829,7 +924,7 @@ module.exports.controller = (app, io, socket_list) => {
                                             })
 
                                             res.json({
-                                                'status': "0",
+                                                'status': "1",
                                                 'payload': {
                                                     'order_id': result.insertId,
                                                     'user_pay_price': user_pay_price,
