@@ -465,7 +465,7 @@ module.exports.controller = (app, io, socket_list) => {
             getUserCart(res, userObj.user_id, (result, total) => {
 
                 var promo_code_id = reqObj.promo_code_id;
-                if(promo_code_id == undefined || promo_code_id == null) {
+                if (promo_code_id == undefined || promo_code_id == null) {
                     promo_code_id = ""
                 }
 
@@ -476,7 +476,7 @@ module.exports.controller = (app, io, socket_list) => {
 
                 db.query(
                     'SELECT `promo_code_id`, `min_order_amount`, `max_discount_amount`, `offer_price` FROM `promo_code_detail` WHERE  `start_date` <= NOW() AND `end_date` >= NOW()  AND `status` = 1  AND `promo_code_id` = ? ;'
-                    , [ reqObj.promo_code_id], (err, pResult) => {
+                    , [reqObj.promo_code_id], (err, pResult) => {
                         if (err) {
                             helper.ThrowHtmlError(err, res)
                             return
@@ -563,7 +563,7 @@ module.exports.controller = (app, io, socket_list) => {
 
                     })
 
-               
+
             })
         })
     })
@@ -973,7 +973,7 @@ module.exports.controller = (app, io, socket_list) => {
                     }
 
                     if (result) {
-                        db.query("UPDATE `order_detail` SET `payment_status`=?,`modify_date`= NOW() WHERE `order_id` = ? AND `user_id` = ? AND `status` = 1", [reqObj.payment_status == "1" ? "2"  : "3" , reqObj.order_id, userObj.user_id], (err, uResult) => {
+                        db.query("UPDATE `order_detail` SET `payment_status`=?,`modify_date`= NOW() WHERE `order_id` = ? AND `user_id` = ? AND `status` = 1", [reqObj.payment_status == "1" ? "2" : "3", reqObj.order_id, userObj.user_id], (err, uResult) => {
                             if (err) {
                                 helper.ThrowHtmlError(err);
                                 return
@@ -984,7 +984,7 @@ module.exports.controller = (app, io, socket_list) => {
                             } else {
                                 helper.Dlog("order payment status update fail")
                             }
-                        }  )
+                        })
                         res.json({
                             'status': "1"
                             , 'message': "your order place successfully"
@@ -996,6 +996,79 @@ module.exports.controller = (app, io, socket_list) => {
                         })
                     }
                 })
+            })
+        })
+    })
+
+    app.post('/api/app/my_order', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            db.query("SELECT `od`.`order_id`, `od`.`cart_id`, `od`.`total_price`, `od`.`user_pay_price`, `od`.`discount_price`, `od`.`deliver_price`, `od`.`deliver_type`, `od`.`payment_type`, `od`.`payment_status`, `od`.`order_status`, `od`.`status`, `od`.`created_date`, GROUP_CONCAT(DISTINCT `pd`.`name` SEPARATOR ',') AS `names`, GROUP_CONCAT(DISTINCT (CASE WHEN `imd`.`image` != '' THEN  CONCAT( '" + image_base_url + "' ,'', `imd`.`image` ) ELSE '' END) SEPARATOR ',') AS `images`  FROM `order_detail` AS `od` " +
+                "INNER JOIN `cart_detail` AS `cd` ON FIND_IN_SET(`cd`.`cart_id`, `od`.`cart_id`) > 0  " +
+                "INNER JOIN `product_detail` AS `pd` ON  `cd`.`prod_id` = `pd`.`prod_id` " +
+                "INNER JOIN `image_detail` AS `imd` ON  `imd`.`prod_id` = `pd`.`prod_id` " +
+                "WHERE `od`.`user_id` = ? GROUP BY `od`.`order_id` ", [userObj.user_id], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    res.json({
+                        "status": "1",
+                        "payload": result,
+                        "message": msg_success
+                    })
+                })
+        })
+    })
+
+    app.post('/api/app/my_order_detail', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["order_id"], () => {
+
+
+                db.query("SELECT `od`.`order_id`, `od`.`cart_id`, `od`.`total_price`, `od`.`user_pay_price`, `od`.`discount_price`, `od`.`deliver_price`, `od`.`deliver_type`, `od`.`payment_type`, `od`.`payment_status`, `od`.`order_status`, `od`.`status`, `od`.`created_date` FROM `order_detail` AS `od` " +
+
+                    "WHERE `od`.`user_id` = ? AND `od`.`order_id` = ? ;" +
+
+                    "SELECT `uod`.`order_id`, `ucd`.`cart_id`, `ucd`.`user_id`, `ucd`.`prod_id`, `ucd`.`qty`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, ( CASE WHEN `fd`.`fav_id` IS NOT NULL THEN 1 ELSE 0 END ) AS `is_fav` , IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, IFNULL(`od`.`price`, `pd`.`price` ) as `offer_price`, IFNULL(`od`.`start_date`,'') as `start_date`, IFNULL(`od`.`end_date`,'') as `end_date`, (CASE WHEN `od`.`offer_id` IS NOT NULL THEN 1 ELSE 0 END) AS `is_offer_active`, (CASE WHEN `imd`.`image` != '' THEN  CONCAT( '" + image_base_url + "' ,'', `imd`.`image` ) ELSE '' END) AS `image`, (CASE WHEN `od`.`price` IS NULL THEN `pd`.`price` ELSE `od`.`price` END) as `item_price`, ( (CASE WHEN `od`.`price` IS NULL THEN `pd`.`price` ELSE `od`.`price` END) * `ucd`.`qty`)  AS `total_price` FROM `order_detail` AS `uod` " +
+                    "INNER JOIN `cart_detail` AS `ucd` ON FIND_IN_SET(`ucd`.`cart_id`, `uod`.`cart_id`) > 0  " +
+                    "INNER JOIN `product_detail` AS `pd` ON `pd`.`prod_id` = `ucd`.`prod_id` AND `pd`.`status` = 1  " +
+                    "INNER JOIN `category_detail` AS `cd` ON `pd`.`cat_id` = `cd`.`cat_id` " +
+                    "LEFT JOIN  `favorite_detail` AS `fd` ON  `pd`.`prod_id` = `fd`.`prod_id` AND `fd`.`user_id` = ? AND `fd`.`status`=  1 " +
+                    "LEFT JOIN `brand_detail` AS `bd` ON `pd`.`brand_id` = `bd`.`brand_id` " +
+                    "LEFT JOIN `offer_detail` AS `od` ON `pd`.`prod_id` = `od`.`prod_id` AND `od`.`status` = 1 AND `od`.`start_date` <= NOW() AND `od`.`end_date` >= NOW() " +
+                    "INNER JOIN `image_detail` AS `imd` ON `pd`.`prod_id` = `imd`.`prod_id` AND `imd`.`status` = 1 " +
+                    "INNER JOIN `type_detail` AS `td` ON `pd`.`type_id` = `td`.`type_id` " +
+                    "WHERE `uod`.`order_id` = ? AND `ucd`.`user_id` = ? GROUP BY `ucd`.`cart_id`, `pd`.`prod_id`", [userObj.user_id, reqObj.order_id, userObj.user_id, reqObj.order_id, userObj.user_id ], (err, result) => {
+                        if (err) {
+                            helper.ThrowHtmlError(err, res)
+                            return
+                        }
+
+                        if (result[0].length > 0) {
+
+                            result[0][0].cart_list = result[1]
+
+                            res.json({
+                                "status": "1",
+                                "payload": result[0][0],
+                                "message": msg_success
+                            })
+                        } else {
+                            res.json({
+                                'status': '0',
+                                'message': 'invalid order'
+                            })
+                        }
+
+
+                    })
             })
         })
     })
