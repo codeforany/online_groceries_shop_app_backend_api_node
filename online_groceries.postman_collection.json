@@ -1681,6 +1681,194 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "order",
+					"item": [
+						{
+							"name": "new_orders_list",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/new_orders_list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"new_orders_list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "completed_orders_list",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/completed_orders_list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"completed_orders_list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cancel_decline_orders_list",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/cancel_decline_orders_list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"cancel_decline_orders_list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "order_detail",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "order_id",
+											"value": "2",
+											"type": "default"
+										},
+										{
+											"key": "user_id",
+											"value": "2",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/order_detail",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"order_detail"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "order_status_change",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "access_token",
+										"value": "L3ROzNF2KBvQ07o0D4qi",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "order_id",
+											"value": "2",
+											"type": "default"
+										},
+										{
+											"key": "user_id",
+											"value": "2",
+											"type": "default"
+										},
+										{
+											"key": "order_status",
+											"value": "",
+											"description": "2: order_accept, 3: order_delivered, 4: cancel, 5: order declined\t",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/api/admin/order_status_change",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"admin",
+										"order_status_change"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -2091,13 +2279,24 @@
 						"header": [
 							{
 								"key": "access_token",
-								"value": "j0JrTIsOgbCiLhR3UsYy",
+								"value": "leu2kpOaiwHeFVS5EKKo",
 								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "urlencoded",
-							"urlencoded": []
+							"urlencoded": [
+								{
+									"key": "promo_code_id",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "deliver_type",
+									"value": "",
+									"type": "default"
+								}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:3001/api/app/cart_list",
@@ -2659,6 +2858,100 @@
 								"api",
 								"app",
 								"order_payment_transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "leu2kpOaiwHeFVS5EKKo",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "address_id",
+									"value": "2",
+									"type": "default"
+								},
+								{
+									"key": "payment_type",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "deliver_type",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "pay_id",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "promo_code_id",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/my_order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"my_order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my_order_detail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "leu2kpOaiwHeFVS5EKKo",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "order_id",
+									"value": "2",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/my_order_detail",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"my_order_detail"
 							]
 						}
 					},

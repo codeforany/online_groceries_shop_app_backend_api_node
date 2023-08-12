@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 09, 2023 at 06:49 AM
+-- Generation Time: Aug 12, 2023 at 07:09 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.1.0
 
@@ -51,7 +51,8 @@ INSERT INTO `address_detail` (`address_id`, `user_id`, `name`, `phone`, `address
 (1, 2, 'My Home', '9876543211', 'New Nat Stge Bldg, S Bapat Marg, Mahim', 'Mumbai', 'Maharashtra', 'Home', '400016', 0, 1, '2023-08-07 10:33:23', '2023-08-07 23:29:54'),
 (2, 2, 'My Home', '98765432102', '246/ A, Dhutpeshwar Bldg, Girgaon Road, Near Gai Wadi, Girgaon', 'Mumbai', 'Maharashtra', 'Home', '400004', 1, 1, '2023-08-07 10:38:58', '2023-08-07 23:29:00'),
 (3, 2, '1', '123', 'asd', 'asdasd', 'dsfsdfsf', 'Office', '987654123', 0, 2, '2023-08-07 23:15:27', '2023-08-07 23:17:23'),
-(4, 2, 'Office', '9875222', 'Shop 15, Dda Shopping Complex, Azadpur', 'Delhi', 'Delhi', 'Office', '110033', 0, 1, '2023-08-07 23:18:09', '2023-08-07 23:18:09');
+(4, 2, 'Office1', '9875222', 'Shop 15, Dda Shopping Complex, Azadpur', 'Delhi', 'Delhi', 'Office', '110033', 0, 1, '2023-08-07 23:18:09', '2023-08-10 11:43:16'),
+(5, 2, 'Add', '986565635225', '444 ASD ASD asdasdasd', 'Surat', 'Gujarat', 'Home', '456546', 0, 1, '2023-08-10 11:39:37', '2023-08-10 11:39:37');
 
 -- --------------------------------------------------------
 
@@ -138,7 +139,25 @@ INSERT INTO `cart_detail` (`cart_id`, `user_id`, `prod_id`, `qty`, `status`, `cr
 (15, 7, 5, 1, 2, '2023-08-08 11:47:08', '2023-08-08 11:47:13'),
 (16, 7, 5, 2, 1, '2023-08-08 11:50:56', '2023-08-08 11:59:41'),
 (17, 7, 6, 3, 1, '2023-08-08 11:51:03', '2023-08-08 11:51:03'),
-(18, 2, 5, 1, 1, '2023-08-08 11:53:14', '2023-08-08 11:53:14');
+(18, 2, 5, 1, 2, '2023-08-08 11:53:14', '2023-08-10 10:26:51'),
+(19, 7, 5, 1, 1, '2023-08-10 10:37:12', '2023-08-10 10:37:12'),
+(20, 7, 6, 1, 1, '2023-08-10 10:37:14', '2023-08-10 10:37:14'),
+(21, 7, 6, 1, 1, '2023-08-10 10:37:16', '2023-08-10 10:37:16'),
+(22, 2, 5, 3, 2, '2023-08-10 10:38:03', '2023-08-10 10:39:14'),
+(23, 2, 6, 2, 2, '2023-08-10 10:38:10', '2023-08-10 10:39:14'),
+(24, 2, 5, 1, 2, '2023-08-10 17:56:55', '2023-08-10 19:23:38'),
+(25, 2, 6, 1, 2, '2023-08-10 17:56:57', '2023-08-10 19:23:38'),
+(26, 2, 5, 1, 2, '2023-08-10 19:24:33', '2023-08-10 19:25:02'),
+(27, 2, 6, 1, 2, '2023-08-10 19:24:35', '2023-08-10 19:25:02'),
+(28, 2, 6, 1, 2, '2023-08-10 19:24:37', '2023-08-10 19:25:02'),
+(29, 2, 5, 1, 2, '2023-08-10 19:27:56', '2023-08-10 19:28:26'),
+(30, 2, 5, 1, 2, '2023-08-10 19:28:53', '2023-08-10 19:29:26'),
+(31, 2, 5, 1, 2, '2023-08-10 19:31:36', '2023-08-10 19:32:02'),
+(32, 2, 5, 1, 2, '2023-08-10 19:34:46', '2023-08-10 19:34:55'),
+(33, 2, 5, 2, 2, '2023-08-10 19:35:51', '2023-08-10 19:41:14'),
+(34, 2, 6, 2, 2, '2023-08-10 19:35:54', '2023-08-10 19:41:14'),
+(35, 2, 7, 1, 2, '2023-08-10 19:36:04', '2023-08-10 19:41:14'),
+(36, 2, 5, 1, 1, '2023-08-11 16:32:23', '2023-08-11 16:32:23');
 
 -- --------------------------------------------------------
 
@@ -231,13 +250,27 @@ INSERT INTO `image_detail` (`img_id`, `prod_id`, `image`, `status`, `created_dat
 
 CREATE TABLE `notification_detail` (
   `notification_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT 0,
+  `ref_id` int(11) NOT NULL DEFAULT 0,
   `title` varchar(100) NOT NULL DEFAULT '',
   `message` varchar(500) NOT NULL DEFAULT '',
   `notification_type` int(1) NOT NULL DEFAULT 1,
   `status` int(1) NOT NULL DEFAULT 1,
+  `is_read` int(1) NOT NULL DEFAULT 1 COMMENT '1 = new, 2 = read',
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `notification_detail`
+--
+
+INSERT INTO `notification_detail` (`notification_id`, `user_id`, `ref_id`, `title`, `message`, `notification_type`, `status`, `is_read`, `created_date`, `modify_date`) VALUES
+(1, 2, 2, 'Order Accepted', 'your order #2 accepted.', 2, 1, 1, '2023-08-12 10:35:43', '2023-08-12 10:35:43'),
+(2, 2, 2, 'Order Accepted', 'your order #2 accepted.', 2, 1, 1, '2023-08-12 10:36:02', '2023-08-12 10:36:02'),
+(3, 2, 3, 'Order Delivered', 'your order #3 delivered.', 2, 1, 1, '2023-08-12 10:36:34', '2023-08-12 10:36:34'),
+(4, 2, 3, 'Order Delivered', 'your order #3 delivered.', 2, 1, 1, '2023-08-12 10:37:29', '2023-08-12 10:37:29'),
+(5, 2, 2, 'Order Delivered', 'your order #2 delivered.', 2, 1, 1, '2023-08-12 10:38:17', '2023-08-12 10:38:17');
 
 -- --------------------------------------------------------
 
@@ -377,6 +410,22 @@ CREATE TABLE `order_detail` (
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `order_detail`
+--
+
+INSERT INTO `order_detail` (`order_id`, `cart_id`, `user_id`, `address_id`, `total_price`, `user_pay_price`, `discount_price`, `deliver_price`, `promo_code_id`, `deliver_type`, `payment_type`, `payment_status`, `order_status`, `status`, `created_date`, `modify_date`) VALUES
+(2, '18', 2, 2, 2.49, 4.2410000000000005, 0.24900000000000003, 2, '1', 1, 1, 1, 3, 1, '2023-08-10 10:22:46', '2023-08-12 10:38:17'),
+(3, '18', 2, 2, 2.49, 4.2410000000000005, 0.24900000000000003, 2, '1', 1, 1, 1, 3, 1, '2023-08-10 10:26:51', '2023-08-12 10:37:29'),
+(4, '22,23', 2, 2, 10.450000000000001, 11.405000000000001, 1.0450000000000002, 2, '1', 1, 2, 2, 1, 1, '2023-08-10 10:39:14', '2023-08-10 10:43:38'),
+(5, '24,25', 2, 1, 3.9800000000000004, 5.582000000000001, 0.3980000000000001, 2, '1', 1, 2, 1, 1, 1, '2023-08-10 19:23:38', '2023-08-10 19:23:38'),
+(6, '26,27,28', 2, 1, 5.470000000000001, 6.923000000000001, 0.547, 2, '1', 1, 1, 1, 1, 1, '2023-08-10 19:25:02', '2023-08-10 19:25:02'),
+(7, '29', 2, 1, 2.49, 4.49, 0, 2, '', 1, 1, 1, 1, 1, '2023-08-10 19:28:26', '2023-08-10 19:28:26'),
+(8, '30', 2, 1, 2.49, 4.49, 0, 2, '', 1, 1, 1, 1, 1, '2023-08-10 19:29:26', '2023-08-10 19:29:26'),
+(9, '31', 2, 1, 2.49, 4.2410000000000005, 0.24900000000000003, 2, '1', 1, 1, 1, 1, 1, '2023-08-10 19:32:02', '2023-08-10 19:32:02'),
+(10, '32', 2, 1, 2.49, 4.49, 0, 2, '', 1, 1, 1, 1, 1, '2023-08-10 19:34:55', '2023-08-10 19:34:55'),
+(11, '33,34,35', 2, 1, 8.950000000000001, 10.055000000000001, 0.8950000000000001, 2, '1', 1, 1, 1, 1, 1, '2023-08-10 19:41:14', '2023-08-10 19:41:14');
+
 -- --------------------------------------------------------
 
 --
@@ -392,6 +441,15 @@ CREATE TABLE `order_payment_detail` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `modify_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_payment_detail`
+--
+
+INSERT INTO `order_payment_detail` (`transaction_id`, `order_id`, `transaction_payload`, `payment_transaction_id`, `status`, `created_date`, `modify_date`) VALUES
+(1, 4, '{\"status\":\"1\",\"payment_transaction_id\":\"2122312312313\" }', '2122312312313', 1, '2023-08-10 10:41:55', '2023-08-10 10:41:55'),
+(2, 4, '{\"status\":\"1\",\"payment_transaction_id\":\"2122312312313\" }', '2122312312313', 1, '2023-08-10 10:42:48', '2023-08-10 10:42:48'),
+(3, 4, '{\"status\":\"1\",\"payment_transaction_id\":\"2122312312313\" }', '2122312312313', 1, '2023-08-10 10:43:38', '2023-08-10 10:43:38');
 
 -- --------------------------------------------------------
 
@@ -417,7 +475,8 @@ CREATE TABLE `payment_method_detail` (
 
 INSERT INTO `payment_method_detail` (`pay_id`, `user_id`, `name`, `card_number`, `card_month`, `card_year`, `status`, `created_date`, `modify_date`) VALUES
 (1, 2, 'Card1', '4242424242424242', '12', '28', 1, '2023-08-09 10:10:43', '2023-08-09 10:10:43'),
-(2, 2, 'Card1', '4242424242424243', '12', '28', 1, '2023-08-09 10:11:55', '2023-08-09 10:11:55');
+(2, 2, 'Card1', '4242424242424243', '12', '28', 1, '2023-08-09 10:11:55', '2023-08-09 10:11:55'),
+(3, 2, 'Ca', '4242424242424242', '08', '2025', 1, '2023-08-09 20:58:35', '2023-08-09 20:58:35');
 
 -- --------------------------------------------------------
 
@@ -481,7 +540,7 @@ CREATE TABLE `promo_code_detail` (
 --
 
 INSERT INTO `promo_code_detail` (`promo_code_id`, `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`, `status`, `created_date`, `modify_date`) VALUES
-(1, 'CGREFILL', 'UPTO 90% OFF', 'Now Explore Premium Dry Fruits & Nuts At Happilo. Flat 34% Off On Order. No Minimum Purchase Criteria. Explore Various Types Of Nuts, Dried Fruits, Seeds, Berries, Family Packs, Combos And More Starting From Rs.99 Only. Just Click On the Link And Visit The Offer Page To Explore More', 1, 10, 50, '10', '2023-08-08 00:00:00', '2023-09-08 00:00:00', 1, '2023-08-08 08:57:31', '2023-08-08 09:16:31'),
+(1, 'CGREFILL', 'UPTO 90% OFF', 'Now Explore Premium Dry Fruits & Nuts At Happilo. Flat 34% Off On Order. No Minimum Purchase Criteria. Explore Various Types Of Nuts, Dried Fruits, Seeds, Berries, Family Packs, Combos And More Starting From Rs.99 Only. Just Click On the Link And Visit The Offer Page To Explore More', 1, 2, 50, '10', '2023-08-08 00:00:00', '2023-09-08 00:00:00', 1, '2023-08-08 08:57:31', '2023-08-08 09:16:31'),
 (2, 'ADREFILL', 'UPTO 50% OFF', 'Now Explore Premium Dry Fruits & Nuts At Happilo. Flat 34% Off On Order. No Minimum Purchase Criteria. Explore Various Types Of Nuts, Dried Fruits, Seeds, Berries, Family Packs, Combos And More Starting From Rs.99 Only. Just Click On the Link And Visit The Offer Page To Explore More', 1, 10, 50, '10', '2023-08-08 00:00:00', '2023-09-08 00:00:00', 1, '2023-08-08 08:57:31', '2023-08-08 09:16:31');
 
 -- --------------------------------------------------------
@@ -556,7 +615,7 @@ CREATE TABLE `user_detail` (
 
 INSERT INTO `user_detail` (`user_id`, `username`, `user_type`, `name`, `email`, `mobile`, `mobile_code`, `password`, `area_id`, `auth_token`, `dervice_token`, `reset_code`, `status`, `created_date`, `modify_date`) VALUES
 (1, 'admin', 2, 'admin', 'admin@admin.com', '', '', '', 0, 'L3ROzNF2KBvQ07o0D4qi', '', '0000', 1, '2023-07-26 14:57:59', '2023-07-26 14:57:59'),
-(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'BLZE1kRNy1jmVTb4Ar9r', '', '0000', 1, '2023-07-25 10:57:32', '2023-08-07 22:33:19'),
+(2, 'testuser', 1, '', 'test@gmail.com', '', '', '123456', 0, 'leu2kpOaiwHeFVS5EKKo', '', '0000', 1, '2023-07-25 10:57:32', '2023-08-10 10:49:49'),
 (5, 'User1', 1, '', 'user1@gmail.com', '', '', '123456', 0, 'pJYFk5XGrCrGZl92K5qu', '', '0000', 1, '2023-07-29 16:55:36', '2023-07-29 16:55:36'),
 (6, 'user1', 1, '', 'user2@gmail.com', '', '', '123456', 0, 'g0mtdJJqF9Xn7iDjQmNN', '', '0000', 1, '2023-08-02 11:01:46', '2023-08-02 11:01:46'),
 (7, 'user6', 1, '', 'test7@gmail.com', '', '', '123456', 0, 'hNytj5vmrr9DmzaSXsyw', '', '0000', 1, '2023-08-02 11:33:19', '2023-08-06 23:42:01');
@@ -709,7 +768,7 @@ ALTER TABLE `zone_detail`
 -- AUTO_INCREMENT for table `address_detail`
 --
 ALTER TABLE `address_detail`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `area_detail`
@@ -727,7 +786,7 @@ ALTER TABLE `brand_detail`
 -- AUTO_INCREMENT for table `cart_detail`
 --
 ALTER TABLE `cart_detail`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `category_detail`
@@ -751,7 +810,7 @@ ALTER TABLE `image_detail`
 -- AUTO_INCREMENT for table `notification_detail`
 --
 ALTER TABLE `notification_detail`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `nutrition_detail`
@@ -769,19 +828,19 @@ ALTER TABLE `offer_detail`
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `order_payment_detail`
 --
 ALTER TABLE `order_payment_detail`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `payment_method_detail`
 --
 ALTER TABLE `payment_method_detail`
-  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `product_detail`

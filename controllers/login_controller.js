@@ -910,6 +910,23 @@ module.exports.controller = (app, io, socket_list) => {
 
                                         if (result) {
 
+                                            if(reqObj.payment_type == "1") {
+
+                                                db.query("INSERT INTO `notification_detail`( `ref_id`, `user_id`, `title`, `message`, `notification_type`) VALUES (?,?,?, ?,?)", [result.insertId, userObj.user_id, 
+                                                    "Order Placed", "your order #" + result.insertId + " placed.", "2"], (err, iResult) => {
+                                                    if (err) {
+                                                        helper.ThrowHtmlError(err);
+                                                        return
+                                                    }
+
+                                                    if (iResult) {
+                                                        helper.Dlog("Notification Added Done")
+                                                    } else {
+                                                        helper.Dlog("Notification Fail")
+                                                    }
+                                                })
+                                            }
+
                                             db.query("UPDATE `cart_detail` SET `status`= 2 ,`modify_date`= NOW() WHERE `user_id` = ? AND `status`= 1 ", [userObj.user_id], (err, cResult) => {
                                                 if (err) {
                                                     helper.ThrowHtmlError(err);
@@ -973,6 +990,23 @@ module.exports.controller = (app, io, socket_list) => {
                     }
 
                     if (result) {
+
+                        var message = reqObj.payment_status == "2" ? "successfully" : "fail"
+
+                        db.query("INSERT INTO `notification_detail`( `ref_id`, `user_id`, `title`, `message`, `notification_type`) VALUES (?,?,?, ?,?)", [reqObj.order_id, userObj.user_id,
+                            "Order payment " + message, "your order #" + reqObj.order_id + " payment " + message +".", "2"], (err, iResult) => {
+                                if (err) {
+                                    helper.ThrowHtmlError(err);
+                                    return
+                                }
+
+                                if (iResult) {
+                                    helper.Dlog("Notification Added Done")
+                                } else {
+                                    helper.Dlog("Notification Fail")
+                                }
+                            })
+
                         db.query("UPDATE `order_detail` SET `payment_status`=?,`modify_date`= NOW() WHERE `order_id` = ? AND `user_id` = ? AND `status` = 1", [reqObj.payment_status == "1" ? "2" : "3", reqObj.order_id, userObj.user_id], (err, uResult) => {
                             if (err) {
                                 helper.ThrowHtmlError(err);
@@ -980,6 +1014,9 @@ module.exports.controller = (app, io, socket_list) => {
                             }
 
                             if (uResult.affectedRows > 0) {
+
+
+
                                 helper.Dlog("order payment status update done")
                             } else {
                                 helper.Dlog("order payment status update fail")

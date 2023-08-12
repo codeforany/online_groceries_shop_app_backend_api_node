@@ -37,6 +37,7 @@ Order Tracking: Track your orders for better convenience.
 - [Youtube Video - 10: User Payment Methods & App APIs](https://youtu.be/gR5UG4r2mL0)
 - [Youtube Video - 11: User Order Place & Payment Verification App APIs](https://youtu.be/wnYROZAXd1w)
 - [Youtube Video - 12: My Order List & Order Detail App APIs](https://youtu.be/fvr5doOnMoU)
+- [Youtube Video - 13: New Order List, Complete Order List, Cancel Order List, Order Detail & Order Status Change with User Notification Admin APIs](https://youtu.be/YXBUmLL-Gyk)
 
 ## Node.js Express Js Api Base Setup With MySQL & Socket.io
 - [Youtube Full Playlist: Node.js Express Js With REST Api & Socket.io Api ](https://www.youtube.com/playlist?list=PLzcRC7PA0xWRlYXalCqTqoC6csqUIJWCa)
