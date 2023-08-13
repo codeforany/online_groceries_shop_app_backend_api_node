@@ -2956,6 +2956,270 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "notification_list",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "leu2kpOaiwHeFVS5EKKo",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/notification_list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"notification_list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "notification_read_all",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "leu2kpOaiwHeFVS5EKKo",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/notification_read_all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"notification_read_all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "leu2kpOaiwHeFVS5EKKo",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "username",
+									"type": "default"
+								},
+								{
+									"key": "name",
+									"value": "test1",
+									"type": "default"
+								},
+								{
+									"key": "mobile",
+									"value": "9876543210",
+									"type": "default"
+								},
+								{
+									"key": "mobile_code",
+									"value": "+91",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/update_profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"update_profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change_password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "access_token",
+								"value": "leu2kpOaiwHeFVS5EKKo",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "current_password",
+									"value": "123456",
+									"type": "default"
+								},
+								{
+									"key": "new_password",
+									"value": "123456",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/change_password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"change_password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot_password_request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "test@gmail.com",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/forgot_password_request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"forgot_password_request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot_password_verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "test@gmail.com",
+									"type": "default"
+								},
+								{
+									"key": "reset_code",
+									"value": "0699",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/forgot_password_verify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"forgot_password_verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot_password_set_password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "user_id",
+									"value": "2",
+									"type": "default"
+								},
+								{
+									"key": "reset_code",
+									"value": "2690",
+									"type": "default"
+								},
+								{
+									"key": "new_password",
+									"value": "123456",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/app/forgot_password_set_password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"app",
+								"forgot_password_set_password"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

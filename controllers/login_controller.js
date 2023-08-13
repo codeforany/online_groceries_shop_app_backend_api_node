@@ -910,21 +910,21 @@ module.exports.controller = (app, io, socket_list) => {
 
                                         if (result) {
 
-                                            if(reqObj.payment_type == "1") {
+                                            if (reqObj.payment_type == "1") {
 
-                                                db.query("INSERT INTO `notification_detail`( `ref_id`, `user_id`, `title`, `message`, `notification_type`) VALUES (?,?,?, ?,?)", [result.insertId, userObj.user_id, 
+                                                db.query("INSERT INTO `notification_detail`( `ref_id`, `user_id`, `title`, `message`, `notification_type`) VALUES (?,?,?, ?,?)", [result.insertId, userObj.user_id,
                                                     "Order Placed", "your order #" + result.insertId + " placed.", "2"], (err, iResult) => {
-                                                    if (err) {
-                                                        helper.ThrowHtmlError(err);
-                                                        return
-                                                    }
+                                                        if (err) {
+                                                            helper.ThrowHtmlError(err);
+                                                            return
+                                                        }
 
-                                                    if (iResult) {
-                                                        helper.Dlog("Notification Added Done")
-                                                    } else {
-                                                        helper.Dlog("Notification Fail")
-                                                    }
-                                                })
+                                                        if (iResult) {
+                                                            helper.Dlog("Notification Added Done")
+                                                        } else {
+                                                            helper.Dlog("Notification Fail")
+                                                        }
+                                                    })
                                             }
 
                                             db.query("UPDATE `cart_detail` SET `status`= 2 ,`modify_date`= NOW() WHERE `user_id` = ? AND `status`= 1 ", [userObj.user_id], (err, cResult) => {
@@ -994,18 +994,18 @@ module.exports.controller = (app, io, socket_list) => {
                         var message = reqObj.payment_status == "2" ? "successfully" : "fail"
 
                         db.query("INSERT INTO `notification_detail`( `ref_id`, `user_id`, `title`, `message`, `notification_type`) VALUES (?,?,?, ?,?)", [reqObj.order_id, userObj.user_id,
-                            "Order payment " + message, "your order #" + reqObj.order_id + " payment " + message +".", "2"], (err, iResult) => {
-                                if (err) {
-                                    helper.ThrowHtmlError(err);
-                                    return
-                                }
+                        "Order payment " + message, "your order #" + reqObj.order_id + " payment " + message + ".", "2"], (err, iResult) => {
+                            if (err) {
+                                helper.ThrowHtmlError(err);
+                                return
+                            }
 
-                                if (iResult) {
-                                    helper.Dlog("Notification Added Done")
-                                } else {
-                                    helper.Dlog("Notification Fail")
-                                }
-                            })
+                            if (iResult) {
+                                helper.Dlog("Notification Added Done")
+                            } else {
+                                helper.Dlog("Notification Fail")
+                            }
+                        })
 
                         db.query("UPDATE `order_detail` SET `payment_status`=?,`modify_date`= NOW() WHERE `order_id` = ? AND `user_id` = ? AND `status` = 1", [reqObj.payment_status == "1" ? "2" : "3", reqObj.order_id, userObj.user_id], (err, uResult) => {
                             if (err) {
@@ -1083,7 +1083,7 @@ module.exports.controller = (app, io, socket_list) => {
                     "LEFT JOIN `offer_detail` AS `od` ON `pd`.`prod_id` = `od`.`prod_id` AND `od`.`status` = 1 AND `od`.`start_date` <= NOW() AND `od`.`end_date` >= NOW() " +
                     "INNER JOIN `image_detail` AS `imd` ON `pd`.`prod_id` = `imd`.`prod_id` AND `imd`.`status` = 1 " +
                     "INNER JOIN `type_detail` AS `td` ON `pd`.`type_id` = `td`.`type_id` " +
-                    "WHERE `uod`.`order_id` = ? AND `ucd`.`user_id` = ? GROUP BY `ucd`.`cart_id`, `pd`.`prod_id`", [userObj.user_id, reqObj.order_id, userObj.user_id, reqObj.order_id, userObj.user_id ], (err, result) => {
+                    "WHERE `uod`.`order_id` = ? AND `ucd`.`user_id` = ? GROUP BY `ucd`.`cart_id`, `pd`.`prod_id`", [userObj.user_id, reqObj.order_id, userObj.user_id, reqObj.order_id, userObj.user_id], (err, result) => {
                         if (err) {
                             helper.ThrowHtmlError(err, res)
                             return
@@ -1110,6 +1110,229 @@ module.exports.controller = (app, io, socket_list) => {
             })
         })
     })
+
+    app.post('/api/app/notification_list', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            db.query("SELECT `notification_id`, `ref_id`, `title`, `message`, `notification_type`, `is_read`, `created_date` FROM `notification_detail` WHERE `user_id` = ? AND `status` = 1", [userObj.user_id], (err, result) => {
+                if (err) {
+                    helper.ThrowHtmlError(err, res);
+                    return
+                }
+
+                res.json({
+                    "status": "1",
+                    "payload": result,
+                    "message": msg_success
+                })
+            })
+        }, "1")
+    })
+
+    app.post('/api/app/notification_read_all', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            db.query("UPDATE `notification_detail` SET `is_read` = '2', `modify_date` = NOW() WHERE `user_id` = ? AND `status` = 1", [userObj.user_id], (err, result) => {
+                if (err) {
+                    helper.ThrowHtmlError(err, res);
+                    return
+                }
+
+                if (result.affectedRows > 0) {
+                    res.json({
+                        "status": "1",
+                        "message": msg_success
+                    })
+                } else {
+                    res.json({
+                        "status": "0",
+                        "message": msg_fail
+                    })
+                }
+
+            })
+        }, "1")
+    })
+
+    app.post('/api/app/update_profile', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["username", "name", "mobile", "mobile_code"], () => {
+                db.query("UPDATE `user_detail` SET `username`=?,`name`=?,`mobile`=?,`mobile_code`=?,`modify_date`=NOW() WHERE `user_id` = ? AND `status` = 1", [reqObj.username, reqObj.name, reqObj.mobile, reqObj.mobile_code, userObj.user_id], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        db.query('SELECT `user_id`, `username`, `name`, `email`, `mobile`, `mobile_code`, `password`, `auth_token`, `status`, `created_date` FROM `user_detail` WHERE `user_id` = ? AND `status` = "1" ', [userObj.user_id], (err, result) => {
+
+                            if (err) {
+                                helper.ThrowHtmlError(err, res);
+                                return
+                            }
+
+                            if (result.length > 0) {
+                                res.json({ "status": "1", "payload": result[0], "message": msg_success })
+                            } else {
+                                res.json({ "status": "0", "message": msg_invalidUser })
+                            }
+                        })
+                    } else {
+                        res.json({
+                            "status": "0",
+                            "message": msg_fail
+                        })
+                    }
+                })
+            })
+
+        })
+    })
+
+    app.post('/api/app/change_password', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["current_password", "new_password"], () => {
+                db.query("UPDATE `user_detail` SET `password`=?, `modify_date`=NOW() WHERE `user_id` = ? AND `password` = ?", [reqObj.new_password, userObj.user_id, reqObj.current_password], (err, result) => {
+                    if (err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({ "status": "1", "message": msg_success })
+                    } else {
+                        res.json({
+                            "status": "0",
+                            "message": msg_fail
+                        })
+                    }
+                })
+            })
+
+        },"1")
+    })
+
+    app.post('/api/app/forgot_password_request', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body
+
+        helper.CheckParameterValid(res, reqObj, ["email"], () => {
+            db.query("SELECT `user_id` FROM `user_detail` WHERE `email` = ? ", [reqObj.email], (err, result) => {
+                if (err) {
+                    helper.ThrowHtmlError(err, res)
+                    return
+                }
+
+                if (result.length > 0) {
+                    var reset_code = helper.createNumber()
+                    db.query("UPDATE `user_detail` SET `reset_code` = ? WHERE `user_id` = ? ", [reset_code, result[0].user_id], (err, uResult) => {
+                        if (err) {
+                            helper.ThrowHtmlError(err, res)
+                            return
+                        }
+
+
+                        if (uResult.affectedRows > 0) {
+                            res.json({ "status": "1", "message": msg_success })
+                        } else {
+                            res.json({
+                                "status": "0",
+                                "message": msg_fail
+                            })
+                        }
+                    })
+
+                } else {
+                    res.json({
+                        "status": "0",
+                        "message": "user not exits"
+                    })
+                }
+            })
+        })
+    })
+
+
+    app.post('/api/app/forgot_password_verify', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body
+
+        helper.CheckParameterValid(res, reqObj, ["email", "reset_code"], () => {
+            db.query("SELECT `user_id` FROM `user_detail` WHERE `email` = ? AND `reset_code` ", [reqObj.email, reqObj.reset_code], (err, result) => {
+                if (err) {
+                    helper.ThrowHtmlError(err, res)
+                    return
+                }
+
+                if (result.length > 0) {
+                    var reset_code = helper.createNumber()
+                    db.query("UPDATE `user_detail` SET `reset_code` = ? WHERE `user_id` = ? ", [reset_code, result[0].user_id], (err, uResult) => {
+                        if (err) {
+                            helper.ThrowHtmlError(err, res)
+                            return
+                        }
+
+
+                        if (uResult.affectedRows > 0) {
+                            res.json({ "status": "1", "payload": { "user_id": result[0].user_id, "reset_code": reset_code }, "message": msg_success })
+                        } else {
+                            res.json({
+                                "status": "0",
+                                "message": msg_fail
+                            })
+                        }
+                    })
+
+                } else {
+                    res.json({
+                        "status": "0",
+                        "message": "user not exits"
+                    })
+                }
+            })
+        })
+
+
+    })
+
+    app.post('/api/app/forgot_password_set_password', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body
+
+        helper.CheckParameterValid(res, reqObj, ["user_id", "reset_code", "new_password"], () => {
+
+            var reset_code = helper.createNumber()
+            db.query("UPDATE `user_detail` SET `password` = ? , `reset_code` = ?  WHERE `user_id` = ? AND `reset_code` = ? ", [reqObj.new_password, reset_code, reqObj.user_id, reqObj.reset_code], (err, uResult) => {
+                if (err) {
+                    helper.ThrowHtmlError(err, res)
+                    return
+                }
+
+
+                if (uResult.affectedRows > 0) {
+                    res.json({ "status": "1", "message": "update password successfully" })
+                } else {
+                    res.json({
+                        "status": "0",
+                        "message": msg_fail
+                    })
+                }
+            })
+        })
+
+
+    })
+
 
     function getProductDetail(res, prod_id, user_id) {
         db.query("SELECT `pd`.`prod_id`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, ( CASE WHEN `fd`.`fav_id` IS NOT NULL THEN 1 ELSE 0 END ) AS `is_fav` , IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, IFNULL(`od`.`price`, `pd`.`price` ) as `offer_price`, (CASE WHEN `imd`.`image` != '' THEN  CONCAT( '" + image_base_url + "' ,'', `imd`.`image` ) ELSE '' END) AS `image`, IFNULL(`od`.`start_date`,'') as `start_date`, IFNULL(`od`.`end_date`,'') as `end_date`, (CASE WHEN `od`.`offer_id` IS NOT NULL THEN 1 ELSE 0 END) AS `is_offer_active` FROM `product_detail` AS  `pd` " +
