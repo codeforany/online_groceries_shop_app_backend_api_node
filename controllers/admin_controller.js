@@ -10,13 +10,12 @@ const msg_fail = "fail";
 
 module.exports.controller = (app, io, socket_list) => {
 
-
     const msg_invalidUser = "invalid username and password";
     const msg_already_register = "this email already register ";
     const msg_brand_added = "Brand added Successfully.";
     const msg_brand_update = "Brand updated Successfully.";
     const msg_brand_delete = "Brand deleted Successfully.";
-    
+
 
     const msg_category_added = "Category added Successfully.";
     const msg_category_update = "Category updated Successfully.";
@@ -54,6 +53,56 @@ module.exports.controller = (app, io, socket_list) => {
     const msg_promo_code_added = "promo code added Successfully.";
     const msg_promo_code_update = "promo code updated Successfully.";
     const msg_promo_code_delete = "promo code deleted Successfully.";
+
+    app.post('/api/admin/login', (req, res) => {
+        helper.Dlog(req.body);
+        var reqObj = req.body;
+        helper.CheckParameterValid(res, reqObj, ["email", "password", "dervice_token"], () => {
+
+            var authToken = helper.createRequestToken();
+            db.query("UPDATE `user_detail` SET `auth_token` = ?, `dervice_token` = ?, `modify_date` = NOW() WHERE `user_type` = ? AND `email` = ? AND `password` = ? AND `status` = ? ", [authToken, reqObj.dervice_token, "2", reqObj.email, reqObj.password, "1"], (err, result) => {
+
+                if (err) {
+                    helper.ThrowHtmlError(err, res);
+                    return
+                }
+
+                if (result.affectedRows > 0) {
+
+                    db.query('SELECT `user_id`, `username`, `name`, `email`, `mobile`, `mobile_code`, `auth_token`, `created_date` FROM `user_detail` WHERE `email` = ? AND `password` = ? AND `status` = "1" ', [reqObj.email, reqObj.password], (err, result) => {
+                        if (err) {
+                            helper.ThrowHtmlError(err, res);
+                            return
+                        }
+
+                        if(result.length > 0) {
+                            res.json({
+                                'status': '0',
+                                'payload': result[0],
+                                'message': msg_invalidUser
+                            })
+                        }else{
+                            res.json({
+                                'status': '0',
+                                'message': msg_invalidUser
+                            })
+                        }
+
+
+                    })
+
+                } else {
+                    res.json({
+                        'status': '0',
+                        'message': msg_invalidUser
+                    })
+                }
+
+            })
+
+        })
+
+    })
 
     app.post('/api/admin/brand_add', (req, res) => {
         helper.Dlog(req.body);
@@ -929,7 +978,7 @@ module.exports.controller = (app, io, socket_list) => {
             helper.CheckParameterValid(res, reqObj, ["prod_id"], () => {
 
                 getProductDetail(res, reqObj.prod_id);
-               
+
             })
         }, "2")
 
@@ -941,10 +990,10 @@ module.exports.controller = (app, io, socket_list) => {
             "LEFT JOIN `brand_detail` AS `bd` ON `pd`.`brand_id` = `bd`.`brand_id` " +
             "INNER JOIN `type_detail` AS `td` ON `pd`.`type_id` = `td`.`type_id` " +
             " WHERE `pd`.`status` = ? AND `pd`.`prod_id` = ? ; " +
-            
+
             " SELECT `nutrition_id`, `prod_id`, `nutrition_name`, `nutrition_value` FROM `nutrition_detail` WHERE `prod_id` = ? AND `status` = ? ORDER BY `nutrition_name`;" +
-            
-            
+
+
             "SELECT `img_id`, `prod_id`, `image` FROM `image_detail` WHERE `prod_id` = ? AND `status` = ? ", [
 
 
@@ -961,21 +1010,21 @@ module.exports.controller = (app, io, socket_list) => {
             // result = result.replace_null()
 
             // helper.Dlog(result);
-            
-            if(result[0].length > 0) {
+
+            if (result[0].length > 0) {
 
                 result[0][0].nutrition_list = result[1];
                 result[0][0].images = result[2];
 
 
-                res.json({  
+                res.json({
                     "status": "1", "payload": result[0][0]
                 });
-            }else{
+            } else {
                 res.json({ "status": "0", "message": "invalid item" })
             }
 
-            
+
 
         })
     }
@@ -1114,11 +1163,11 @@ module.exports.controller = (app, io, socket_list) => {
         helper.Dlog(req.body);
         var reqObj = req.body;
 
-        helper.CheckParameterValid(res, reqObj, ["area_name", "zone_id" ], () => {
+        helper.CheckParameterValid(res, reqObj, ["area_name", "zone_id"], () => {
 
             checkAccessToken(req.headers, res, (uObj) => {
 
-                db.query("SELECT `area_id`, `name` FROM `area_detail` WHERE `name`  = ? AND `zone_id` = ? AND `status` = ?", [reqObj.area_name, reqObj.zone_id,  "1"], (err, result) => {
+                db.query("SELECT `area_id`, `name` FROM `area_detail` WHERE `name`  = ? AND `zone_id` = ? AND `status` = ?", [reqObj.area_name, reqObj.zone_id, "1"], (err, result) => {
                     if (err) {
                         helper.ThrowHtmlError(err, res);
                         return;
@@ -1159,7 +1208,7 @@ module.exports.controller = (app, io, socket_list) => {
         helper.Dlog(req.body);
         var reqObj = req.body;
 
-        helper.CheckParameterValid(res, reqObj, ["area_id", "zone_id" , "area_name"], () => {
+        helper.CheckParameterValid(res, reqObj, ["area_id", "zone_id", "area_name"], () => {
 
             checkAccessToken(req.headers, res, (uObj) => {
 
@@ -1240,27 +1289,27 @@ module.exports.controller = (app, io, socket_list) => {
         helper.Dlog(req.body);
         var reqObj = req.body;
 
-        helper.CheckParameterValid(res, reqObj, ["prod_id", "price", "start_date", "end_date" ], () => {
+        helper.CheckParameterValid(res, reqObj, ["prod_id", "price", "start_date", "end_date"], () => {
 
             checkAccessToken(req.headers, res, (uObj) => {
 
                 db.query("INSERT INTO `offer_detail`( `prod_id`, `price`, `start_date`, `end_date`,  `created_date`, `modify_date`) VALUES (?,?,?, ?,NOW(), NOW())", [
                     reqObj.prod_id, reqObj.price, reqObj.start_date, reqObj.end_date
-                        ], (err, result) => {
+                ], (err, result) => {
 
-                            if (err) {
-                                helper.ThrowHtmlError(err, res);
-                                return;
-                            }
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return;
+                    }
 
-                            if (result) {
-                                res.json({
-                                    "status": "1", "message": msg_offer_added
-                                });
-                            } else {
-                                res.json({ "status": "0", "message": msg_fail })
-                            }
-                        })
+                    if (result) {
+                        res.json({
+                            "status": "1", "message": msg_offer_added
+                        });
+                    } else {
+                        res.json({ "status": "0", "message": msg_fail })
+                    }
+                })
             }, "2")
         })
     })
@@ -1322,19 +1371,19 @@ module.exports.controller = (app, io, socket_list) => {
         var reqObj = req.body
 
         checkAccessToken(req.headers, res, (userObj) => {
-            helper.CheckParameterValid(res, reqObj, ["code", "title", "description", "type", "min_order_amount", "max_discount_amount", "offer_price", "start_date", "end_date" ], () => {
+            helper.CheckParameterValid(res, reqObj, ["code", "title", "description", "type", "min_order_amount", "max_discount_amount", "offer_price", "start_date", "end_date"], () => {
                 db.query("SELECT `promo_code_id` FROM `promo_code_detail` WHERE `code` = ? AND `status` = 1 ", [reqObj.code,], (err, result) => {
-                    if(err) {
+                    if (err) {
                         helper.ThrowHtmlError(err, res)
                         return
                     }
 
-                    if(result.length > 0) {
+                    if (result.length > 0) {
                         res.json({
-                            'status':'0',
+                            'status': '0',
                             'message': msg_added
                         })
-                    }else{
+                    } else {
                         db.query("INSERT INTO `promo_code_detail` ( `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`) VALUES (?,?,?, ?,?,?, ?,?,?)", [
                             reqObj.code, reqObj.title, reqObj.description, reqObj.type, reqObj.min_order_amount, reqObj.max_discount_amount, reqObj.offer_price, reqObj.start_date, reqObj.end_date
                         ], (err, result) => {
@@ -1344,44 +1393,10 @@ module.exports.controller = (app, io, socket_list) => {
                                 return
                             }
 
-                            if(result) {
+                            if (result) {
                                 res.json({
                                     'status': '1',
                                     'message': msg_promo_code_added
-                                })
-                            }else{
-                                res.json({
-                                    'status': '0',
-                                    'message': msg_fail
-                                })
-                            }
-                        })
-                    }
-                })
-            } )
-        }, "2" )
-    })
-
-    app.post('/api/admin/promo_code_update', (req, res) => {
-        helper.Dlog(req.body)
-        var reqObj = req.body
-
-        checkAccessToken(req.headers, res, (userObj) => {
-            helper.CheckParameterValid(res, reqObj, ["promo_code_id", "title", "description", "type", "min_order_amount", "max_discount_amount", "offer_price", "start_date", "end_date"], () => {
-               
-                db.query("UPDATE `promo_code_detail` SET `title`= ? ,`description`= ? ,`type`= ? ,`min_order_amount`= ? ,`max_discount_amount`= ? ,`offer_price`= ? ,`start_date`= ? ,`end_date`= ?, `modify_date` = NOW() WHERE `promo_code_id` = ? AND `start_date` >= NOW() AND `status` = 1 ", [
-                    reqObj.title, reqObj.description, reqObj.type, reqObj.min_order_amount, reqObj.max_discount_amount, reqObj.offer_price, reqObj.start_date, reqObj.end_date, reqObj.promo_code_id
-                        ], (err, result) => {
-
-                            if (err) {
-                                helper.ThrowHtmlError(err, res)
-                                return
-                            }
-
-                            if (result.affectedRows > 0) {
-                                res.json({
-                                    'status': '1',
-                                    'message': msg_promo_code_update
                                 })
                             } else {
                                 res.json({
@@ -1390,7 +1405,41 @@ module.exports.controller = (app, io, socket_list) => {
                                 })
                             }
                         })
-                   
+                    }
+                })
+            })
+        }, "2")
+    })
+
+    app.post('/api/admin/promo_code_update', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body
+
+        checkAccessToken(req.headers, res, (userObj) => {
+            helper.CheckParameterValid(res, reqObj, ["promo_code_id", "title", "description", "type", "min_order_amount", "max_discount_amount", "offer_price", "start_date", "end_date"], () => {
+
+                db.query("UPDATE `promo_code_detail` SET `title`= ? ,`description`= ? ,`type`= ? ,`min_order_amount`= ? ,`max_discount_amount`= ? ,`offer_price`= ? ,`start_date`= ? ,`end_date`= ?, `modify_date` = NOW() WHERE `promo_code_id` = ? AND `start_date` >= NOW() AND `status` = 1 ", [
+                    reqObj.title, reqObj.description, reqObj.type, reqObj.min_order_amount, reqObj.max_discount_amount, reqObj.offer_price, reqObj.start_date, reqObj.end_date, reqObj.promo_code_id
+                ], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res)
+                        return
+                    }
+
+                    if (result.affectedRows > 0) {
+                        res.json({
+                            'status': '1',
+                            'message': msg_promo_code_update
+                        })
+                    } else {
+                        res.json({
+                            'status': '0',
+                            'message': msg_fail
+                        })
+                    }
+                })
+
             })
         }, "2")
     })
@@ -1428,25 +1477,25 @@ module.exports.controller = (app, io, socket_list) => {
         }, "2")
     })
 
-    
+
     app.post('/api/admin/promo_code_list', (req, res) => {
         helper.Dlog(req.body)
         var reqObj = req.body
 
         checkAccessToken(req.headers, res, (userObj) => {
-                db.query("SELECT `promo_code_id`, `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`, `created_date`, `modify_date` FROM `promo_code_detail` WHERE `status` = 1 ORDER BY `promo_code_id` DESC ", [], (err, result) => {
+            db.query("SELECT `promo_code_id`, `code`, `title`, `description`, `type`, `min_order_amount`, `max_discount_amount`, `offer_price`, `start_date`, `end_date`, `created_date`, `modify_date` FROM `promo_code_detail` WHERE `status` = 1 ORDER BY `promo_code_id` DESC ", [], (err, result) => {
 
-                    if (err) {
-                        helper.ThrowHtmlError(err, res)
-                        return
-                    }
+                if (err) {
+                    helper.ThrowHtmlError(err, res)
+                    return
+                }
 
-                    res.json({
-                        'status': '1',
-                        'payload': result,
-                        'message': msg_success
-                    })
+                res.json({
+                    'status': '1',
+                    'payload': result,
+                    'message': msg_success
                 })
+            })
         }, "2")
     })
 
@@ -1471,7 +1520,7 @@ module.exports.controller = (app, io, socket_list) => {
                         "message": msg_success
                     })
                 })
-        },'2')
+        }, '2')
     })
 
     app.post('/api/admin/completed_orders_list', (req, res) => {
@@ -1538,7 +1587,7 @@ module.exports.controller = (app, io, socket_list) => {
                     "INNER JOIN `cart_detail` AS `ucd` ON FIND_IN_SET(`ucd`.`cart_id`, `uod`.`cart_id`) > 0  " +
                     "INNER JOIN `product_detail` AS `pd` ON `pd`.`prod_id` = `ucd`.`prod_id` AND `pd`.`status` = 1  " +
                     "INNER JOIN `category_detail` AS `cd` ON `pd`.`cat_id` = `cd`.`cat_id` " +
-                    
+
                     "LEFT JOIN `brand_detail` AS `bd` ON `pd`.`brand_id` = `bd`.`brand_id` " +
                     "LEFT JOIN `offer_detail` AS `od` ON `pd`.`prod_id` = `od`.`prod_id` AND `od`.`status` = 1 AND `od`.`start_date` <= NOW() AND `od`.`end_date` >= NOW() " +
                     "INNER JOIN `image_detail` AS `imd` ON `pd`.`prod_id` = `imd`.`prod_id` AND `imd`.`status` = 1 " +
@@ -1564,9 +1613,9 @@ module.exports.controller = (app, io, socket_list) => {
                                 'message': 'invalid order'
                             })
                         }
-                })
+                    })
             })
-        },'2')
+        }, '2')
     })
 
     app.post('/api/admin/order_status_change', (req, res) => {
@@ -1575,13 +1624,13 @@ module.exports.controller = (app, io, socket_list) => {
 
         checkAccessToken(req.headers, res, (userObj) => {
             helper.CheckParameterValid(res, reqObj, ["order_id", "user_id", "order_status"], () => {
-                db.query("UPDATE `order_detail` SET `order_status`= ?,`modify_date`= NOW() WHERE `order_id` = ? AND `user_id` = ? AND `order_status` < ? ", [reqObj.order_status, reqObj.order_id, reqObj.user_id, reqObj.order_status] , (err, result) => {
-                    if(err) {
+                db.query("UPDATE `order_detail` SET `order_status`= ?,`modify_date`= NOW() WHERE `order_id` = ? AND `user_id` = ? AND `order_status` < ? ", [reqObj.order_status, reqObj.order_id, reqObj.user_id, reqObj.order_status], (err, result) => {
+                    if (err) {
                         helper.ThrowHtmlError(err, res);
                         return
                     }
 
-                    if(result.affectedRows > 0) {
+                    if (result.affectedRows > 0) {
 
                         var title = ""
                         var message = ""
@@ -1590,7 +1639,7 @@ module.exports.controller = (app, io, socket_list) => {
                         switch (reqObj.order_status) {
                             case "2":
                                 title = "Order Accepted"
-                                message = "your order #" + reqObj.order_id +" accepted."
+                                message = "your order #" + reqObj.order_id + " accepted."
                                 break;
                             case "3":
                                 title = "Order Delivered"
@@ -1608,7 +1657,7 @@ module.exports.controller = (app, io, socket_list) => {
                                 break;
                         }
 
-                        db.query("INSERT INTO `notification_detail`( `ref_id`, `user_id`, `title`, `message`, `notification_type`) VALUES (?,?,?, ?,?)", [reqObj.order_id, reqObj.user_id, title, message, notiType  ] , (err, iResult) => {
+                        db.query("INSERT INTO `notification_detail`( `ref_id`, `user_id`, `title`, `message`, `notification_type`) VALUES (?,?,?, ?,?)", [reqObj.order_id, reqObj.user_id, title, message, notiType], (err, iResult) => {
                             if (err) {
                                 helper.ThrowHtmlError(err);
                                 return
@@ -1616,25 +1665,25 @@ module.exports.controller = (app, io, socket_list) => {
 
                             if (iResult) {
                                 helper.Dlog("Notification Added Done")
-                            }else{
+                            } else {
                                 helper.Dlog("Notification Fail")
                             }
-                        } )
+                        })
 
                         res.json({
-                            "status":"1",
+                            "status": "1",
                             "message": "Order Status updated successfully"
                         })
-                    }else{
+                    } else {
                         res.json({
                             "status": "0",
                             "message": msg_fail
                         })
                     }
-                } )
-            } )
-        },'2')
-    } )
+                })
+            })
+        }, '2')
+    })
 
 
 }
