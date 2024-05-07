@@ -77,9 +77,9 @@ module.exports.controller = (app, io, socket_list) => {
 
                         if(result.length > 0) {
                             res.json({
-                                'status': '0',
+                                'status': '1',
                                 'payload': result[0],
-                                'message': msg_invalidUser
+                                'message': msg_success
                             })
                         }else{
                             res.json({
