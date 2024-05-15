@@ -75,13 +75,13 @@ module.exports.controller = (app, io, socket_list) => {
                             return
                         }
 
-                        if(result.length > 0) {
+                        if (result.length > 0) {
                             res.json({
                                 'status': '1',
                                 'payload': result[0],
                                 'message': msg_success
                             })
-                        }else{
+                        } else {
                             res.json({
                                 'status': '0',
                                 'message': msg_invalidUser
@@ -1269,18 +1269,23 @@ module.exports.controller = (app, io, socket_list) => {
         var reqObj = req.body;
 
         checkAccessToken(req.headers, res, (uObj) => {
-            db.query("SELECT `ad`.`area_id`, `ad`.`zone_id` , `ad`.`name`, `zd`.`name` AS `zone_name`  FROM `area_detail` AS `ad` INNER JOIN `zone_detail` AS `zd` ON `zd`.`zone_id` = `ad`.`zone_id` AND `zd`.`status` = '1' WHERE `ad`.`status`= ? ", [
-                "1"
-            ], (err, result) => {
+            helper.CheckParameterValid(res, reqObj, ["zone_id"], () => {
 
-                if (err) {
-                    helper.ThrowHtmlError(err, res);
-                    return;
-                }
 
-                res.json({
-                    "status": "1", "payload": result
-                });
+
+                db.query("SELECT `ad`.`area_id`, `ad`.`zone_id` , `ad`.`name`, `zd`.`name` AS `zone_name`  FROM `area_detail` AS `ad` INNER JOIN `zone_detail` AS `zd` ON `zd`.`zone_id` = `ad`.`zone_id` AND `zd`.`status` = '1' AND `zd`.`zone_id` = ? WHERE `ad`.`status`= ? ", [
+                   reqObj.zone_id ,  "1"
+                ], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return;
+                    }
+
+                    res.json({
+                        "status": "1", "payload": result
+                    });
+                })
             })
         }, "2")
     })
