@@ -644,7 +644,7 @@ module.exports.controller = (app, io, socket_list) => {
                                 var nutritionDataArr = JSON.parse(reqObj.nutrition_data[0])
 
                                 nutritionDataArr.forEach(nObj => {
-                                    nutritionInsertData.push([result.insertId, nObj.name, nObj.value]);
+                                    nutritionInsertData.push([result.insertId, nObj.nutrition_name, nObj.nutrition_value]);
                                 });
 
 
