@@ -949,9 +949,10 @@ module.exports.controller = (app, io, socket_list) => {
 
 
         checkAccessToken(req.headers, res, (uObj) => {
-            db.query("SELECT `pd`.`prod_id`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, (CASE WHEN `imd`.`image` != '' THEN CONCAT('" + image_base_url + "', '', `imd`.`image`) ELSE '' END ) AS `image` FROM `product_detail` AS  `pd` " +
+            db.query("SELECT `pd`.`prod_id`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, (CASE WHEN `imd`.`image` != '' THEN CONCAT('" + image_base_url + "', '', `imd`.`image`) ELSE '' END ) AS `image`, IFNULL (`od`.`price`, `pd`.`price`) AS `offer_price` FROM `product_detail` AS  `pd` " +
                 "INNER JOIN `category_detail` AS `cd` ON `pd`.`cat_id` = `cd`.`cat_id` " +
                 "LEFT JOIN `brand_detail` AS `bd` ON `pd`.`brand_id` = `bd`.`brand_id` " +
+                "LEFT JOIN `offer_detail` AS `od` ON `od`.`prod_id` = `pd`.`prod_id` AND `od`.`status` = 1 AND `od`.`start_date` <= NOW() AND `od`.`end_date` >= NOW() " +
                 "INNER JOIN `type_detail` AS `td` ON `pd`.`type_id` = `td`.`type_id` " +
                 "INNER JOIN `image_detail` AS `imd` ON `imd`.`prod_id` = `pd`.`prod_id` AND `imd`.`status` = 1 " +
                 " WHERE `pd`.`status` = ? GROUP BY `pd`.`prod_id` ORDER BY `pd`.`prod_id` DESC ", [
@@ -976,12 +977,12 @@ module.exports.controller = (app, io, socket_list) => {
         helper.Dlog(req.body);
         checkAccessToken(req.headers, res, () => {
 
-            db.query( "SELECT `brand_id`, `brand_name` FROM `brand_detail` WHERE `status` = ? ;" +
-                "SELECT `cat_id`, `cat_name`, (CASE WHEN `image` != '' THEN CONCAT('"+ image_base_url +"', '', `image`) ELSE '' END ) AS `image`, `color` FROM `category_detail` WHERE `status`= ? ;"+
+            db.query("SELECT `brand_id`, `brand_name` FROM `brand_detail` WHERE `status` = ? ;" +
+                "SELECT `cat_id`, `cat_name`, (CASE WHEN `image` != '' THEN CONCAT('" + image_base_url + "', '', `image`) ELSE '' END ) AS `image`, `color` FROM `category_detail` WHERE `status`= ? ;" +
 
-                "SELECT `type_id`, `type_name`, (CASE WHEN `image` != '' THEN CONCAT('" + image_base_url +"', '', `image`) ELSE '' END ) AS `image`, `color` FROM `type_detail` WHERE `status` = ? ", [ "1", "1", "1" ], (err, result) => {
+                "SELECT `type_id`, `type_name`, (CASE WHEN `image` != '' THEN CONCAT('" + image_base_url + "', '', `image`) ELSE '' END ) AS `image`, `color` FROM `type_detail` WHERE `status` = ? ", ["1", "1", "1"], (err, result) => {
 
-                    if(err) {
+                    if (err) {
                         helper.ThrowHtmlError(err, res);
                         return;
                     }
@@ -996,9 +997,9 @@ module.exports.controller = (app, io, socket_list) => {
                     })
                 }
 
-             )
+            )
 
-        }, "2" )
+        }, "2")
     })
 
     app.post('/api/admin/product_detail', (req, res) => {
@@ -1026,7 +1027,7 @@ module.exports.controller = (app, io, socket_list) => {
             " SELECT `nutrition_id`, `prod_id`, `nutrition_name`, `nutrition_value` FROM `nutrition_detail` WHERE `prod_id` = ? AND `status` = ? ORDER BY `nutrition_name`;" +
 
 
-            "SELECT `img_id`, `prod_id`, `image` FROM `image_detail` WHERE `prod_id` = ? AND `status` = ? ", [
+            "SELECT `img_id`, `prod_id`, (CASE WHEN `image` != '' THEN CONCAT('" + image_base_url + "', '', `image`) ELSE '' END ) AS `image` FROM `image_detail` WHERE `prod_id` = ? AND `status` = ? ", [
 
 
 
@@ -1401,6 +1402,35 @@ module.exports.controller = (app, io, socket_list) => {
                 });
             })
         }, "2")
+    })
+
+    app.post('/api/admin/offer_product_list', (req, res) => {
+
+        checkAccessToken(req.headers, res, (uObj) => {
+
+            db.query('SELECT  `od`.`offer_id`, `od`.`prod_id`, `od`.`price` AS `offer_price`, `od`.`start_date`, `od`.`end_date`, `od`.`status`, `od`.`created_date`, `od`.`modify_date`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`price`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, IFNULL( `cd`.`cat_name`, "" ) AS `cat_name`, IFNULL( `bd`.`brand_name`, "" ) AS `brand_name`, IFNULL( `td`.`type_name`, "" ) AS `type_name`, (CASE WHEN `imd`.`image` != "" THEN CONCAT( "' + image_base_url + '", "", `imd`.`image` ) ELSE "" END) AS `image` FROM `offer_detail` AS `od` ' +
+
+                'INNER JOIN `product_detail` AS `pd` ON `od`.`prod_id` = `pd`.`prod_id` AND `pd`.`status` =  ?  ' +
+                'LEFT JOIN `category_detail` AS `cd` ON `pd`.`cat_id` = `cd`.`cat_id` AND `cd`.`status` = ? ' +
+                'LEFT JOIN `brand_detail` AS `bd` ON `pd`.`brand_id` = `bd`.`brand_id` AND `bd`.`status` = ? ' +
+                'LEFT JOIN `type_detail` AS `td` ON `pd`.`type_id` = `td`.`type_id` AND `td`.`status` = ? ' +
+                'INNER JOIN `image_detail` AS `imd` ON `imd`.`prod_id` = `imd`.`prod_id` AND `imd`.`status` =  ?  ' +
+                ' WHERE `od`.`status`= ? AND `od`.`end_date` >= NOW() GROUP BY `od`.`offer_id`', ["1", "1", "1", "1", "1", "1"], (err, result) => {
+
+                    if (err) {
+                        helper.ThrowHtmlError(err, res);
+                        return
+                    }
+
+                    res.json({
+                        "status": "1", "payload": result
+                    });
+
+                })
+
+        })
+
+
     })
 
     app.post('/api/admin/promo_code_add', (req, res) => {
