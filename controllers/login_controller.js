@@ -31,7 +31,7 @@ module.exports.controller = (app, io, socket_list) => {
         helper.CheckParameterValid(res, reqObj, ["email", "password", "dervice_token"], () => {
 
             var auth_token = helper.createRequestToken();
-            db.query("UPDATE `user_detail` SET `auth_token`= ?,`dervice_token`=?,`modify_date`= NOW() WHERE `user_type` = ? AND `email` = ? AND `password` = ? AND `status` = ?", [auth_token, reqObj.dervice_token,"1" , reqObj.email, reqObj.password, "1"], (err, result) => {
+            db.query("UPDATE `user_detail` SET `auth_token`= ?,`dervice_token`=?,`modify_date`= NOW() WHERE `user_type` = ? AND `email` = ? AND `password` = ? AND `status` = ?", [auth_token, reqObj.dervice_token, "1", reqObj.email, reqObj.password, "1"], (err, result) => {
 
                 if (err) {
                     helper.ThrowHtmlError(err, res);
@@ -1111,6 +1111,71 @@ module.exports.controller = (app, io, socket_list) => {
         })
     })
 
+    app.post('/api/app/order_product_review_add', (req, res) => {
+        helper.Dlog(req.body)
+        var reqObj = req.body;
+
+        checkAccessToken(req.headers, res, (uObj) => {
+            helper.CheckParameterValid(res, reqObj, ["prod_id", "order_id", "rating", "review_message"], () => {
+
+                db.query("SELECT `od`.`order_id` FROM `order_detail` AS `od` " +
+                    "INNER JOIN`cart_detail` AS`cd` ON FIND_IN_SET(`ucd`.`cart_id`, `uod`.`cart_id`) > 0 AND`od`.`order_id` = ? AND `od`.`user_id` = ? " +
+                    "INNER JOIN`product_detail` AS`pd` ON `cd`.`prod_id` = `pd`.`prod_id` AND `pd`.`prod_id` = ?; "
+
+                    +
+                    "SELECT `review_id` FROM `review_detail` WHERE `order_id` = ? AND `prod_id`= ? AND `user_id` = ? AND `status` = 1 ;"
+                    , [reqObj.order_id, uObj.user_id, reqObj.prod_id, reqObj.order_id, reqObj.prod_id, uObj.user_id], (err, result) => {
+
+                        if (err) {
+                            helper.ThrowHtmlError(err, res);
+                            return
+                        }
+
+                        if (result[0].length > 0) {
+
+                            if (result[1].length > 0) {
+                                res.json({
+                                    'status': '0',
+                                    'message': 'already given review'
+                                })
+                            } else {
+                                db.query("INSERT INTO `review_detail`( `order_id`, `prod_id`, `user_id`, `rate`, `message`) VALUES (?,?,?, ?,?)", [reqObj.order_id, reqObj.prod_id, uObj.user_id, reqObj.rating, reqObj.review_message], (err, result) => {
+
+                                    if (err) {
+                                        helper.ThrowHtmlError(err, res);
+                                        return
+                                    }
+
+                                    if (result) {
+                                        res.json({
+                                            'status': '1',
+                                            'message': 'review given successfully'
+                                        })
+                                    } else {
+                                        res.json({
+                                            'status': '0',
+                                            'message': 'fail'
+                                        })
+                                    }
+                                })
+                            }
+
+                        } else {
+                            res.json({
+                                'status': '0',
+                                'message': 'invalid order'
+                            })
+                        }
+
+
+                    })
+
+
+            })
+        })
+
+    })
+
     app.post('/api/app/notification_list', (req, res) => {
         helper.Dlog(req.body);
         var reqObj = req.body
@@ -1219,7 +1284,7 @@ module.exports.controller = (app, io, socket_list) => {
                 })
             })
 
-        },"1")
+        }, "1")
     })
 
     app.post('/api/app/forgot_password_request', (req, res) => {
