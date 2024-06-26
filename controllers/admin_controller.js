@@ -946,12 +946,13 @@ module.exports.controller = (app, io, socket_list) => {
 
 
         checkAccessToken(req.headers, res, (uObj) => {
-            db.query("SELECT `pd`.`prod_id`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, (CASE WHEN `imd`.`image` != '' THEN CONCAT('" + image_base_url + "', '', `imd`.`image`) ELSE '' END ) AS `image`, IFNULL (`od`.`price`, `pd`.`price`) AS `offer_price` FROM `product_detail` AS  `pd` " +
+            db.query("SELECT `pd`.`prod_id`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, (CASE WHEN `imd`.`image` != '' THEN CONCAT('" + image_base_url + "', '', `imd`.`image`) ELSE '' END ) AS `image`, IFNULL (`od`.`price`, `pd`.`price`) AS `offer_price`,  AVG( CASE WHEN `rd`.`rate` IS NOT NULL THEN `rd`.`rate` ELSE 5.0 END ) AS `avg_rating` FROM `product_detail` AS  `pd` " +
                 "INNER JOIN `category_detail` AS `cd` ON `pd`.`cat_id` = `cd`.`cat_id` " +
                 "LEFT JOIN `brand_detail` AS `bd` ON `pd`.`brand_id` = `bd`.`brand_id` " +
                 "LEFT JOIN `offer_detail` AS `od` ON `od`.`prod_id` = `pd`.`prod_id` AND `od`.`status` = 1 AND `od`.`start_date` <= NOW() AND `od`.`end_date` >= NOW() " +
                 "INNER JOIN `type_detail` AS `td` ON `pd`.`type_id` = `td`.`type_id` " +
                 "INNER JOIN `image_detail` AS `imd` ON `imd`.`prod_id` = `pd`.`prod_id` AND `imd`.`status` = 1 " +
+                "LEFT JOIN `review_detail` AS `rd` ON `rd`.`prod_id` = `pd`.`prod_id` " +
                 " WHERE `pd`.`status` = ? GROUP BY `pd`.`prod_id` ORDER BY `pd`.`prod_id` DESC ", [
                 "1"
             ], (err, result) => {
@@ -1022,11 +1023,14 @@ module.exports.controller = (app, io, socket_list) => {
             " SELECT `nutrition_id`, `prod_id`, `nutrition_name`, `nutrition_value` FROM `nutrition_detail` WHERE `prod_id` = ? AND `status` = ? ORDER BY `nutrition_name`;" +
 
 
-            "SELECT `img_id`, `prod_id`, (CASE WHEN `image` != '' THEN CONCAT('" + image_base_url + "', '', `image`) ELSE '' END ) AS `image` FROM `image_detail` WHERE `prod_id` = ? AND `status` = ? ", [
+            "SELECT `img_id`, `prod_id`, (CASE WHEN `image` != '' THEN CONCAT('" + image_base_url + "', '', `image`) ELSE '' END ) AS `image` FROM `image_detail` WHERE `prod_id` = ? AND `status` = ? ;" +
+            
+            "SELECT `rd`.`review_id`, `rd`.`prod_id`, `rd`.`user_id`, `rd`.`rate`, `rd`.`message`, `rd`.`created_date`, `ud`.`name` FROM `review_detail` AS `rd`  " +
+            "INNER JOIN `user_detail` AS `ud` ON `ud`.`user_id` = `rd`.`user_id` AND `rd`.`prod_id` = ? ORDER BY `rd`.`review_id` DESC ", [
 
 
 
-            "1", prod_id, prod_id, "1", prod_id, "1",
+            "1", prod_id, prod_id, "1", prod_id, "1", prod_id
 
         ], (err, result) => {
 
@@ -1043,7 +1047,7 @@ module.exports.controller = (app, io, socket_list) => {
 
                 result[0][0].nutrition_list = result[1];
                 result[0][0].images = result[2];
-
+                result[0][0].review_list = result[3];
 
                 res.json({
                     "status": "1", "payload": result[0][0]
@@ -1646,13 +1650,14 @@ module.exports.controller = (app, io, socket_list) => {
 
                     "WHERE `od`.`order_id` = ? AND `od`.`user_id` = ? ;" +
 
-                    "SELECT `uod`.`order_id`, `ucd`.`cart_id`, `ucd`.`user_id`, `ucd`.`prod_id`, `ucd`.`qty`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, IFNULL(`od`.`price`, `pd`.`price` ) as `offer_price`, IFNULL(`od`.`start_date`,'') as `start_date`, IFNULL(`od`.`end_date`,'') as `end_date`, (CASE WHEN `od`.`offer_id` IS NOT NULL THEN 1 ELSE 0 END) AS `is_offer_active`, (CASE WHEN `imd`.`image` != '' THEN  CONCAT( '" + image_base_url + "' ,'', `imd`.`image` ) ELSE '' END) AS `image`, (CASE WHEN `od`.`price` IS NULL THEN `pd`.`price` ELSE `od`.`price` END) as `item_price`, ( (CASE WHEN `od`.`price` IS NULL THEN `pd`.`price` ELSE `od`.`price` END) * `ucd`.`qty`)  AS `total_price` FROM `order_detail` AS `uod` " +
+                    "SELECT `uod`.`order_id`, `ucd`.`cart_id`, `ucd`.`user_id`, `ucd`.`prod_id`, `ucd`.`qty`, `pd`.`cat_id`, `pd`.`brand_id`, `pd`.`type_id`, `pd`.`name`, `pd`.`detail`, `pd`.`unit_name`, `pd`.`unit_value`, `pd`.`nutrition_weight`, `pd`.`price`, `pd`.`created_date`, `pd`.`modify_date`, `cd`.`cat_name`, IFNULL( `bd`.`brand_name`, '' ) AS `brand_name` , `td`.`type_name`, IFNULL(`od`.`price`, `pd`.`price` ) as `offer_price`, IFNULL(`od`.`start_date`,'') as `start_date`, IFNULL(`od`.`end_date`,'') as `end_date`, (CASE WHEN `od`.`offer_id` IS NOT NULL THEN 1 ELSE 0 END) AS `is_offer_active`, (CASE WHEN `imd`.`image` != '' THEN  CONCAT( '" + image_base_url + "' ,'', `imd`.`image` ) ELSE '' END) AS `image`, (CASE WHEN `od`.`price` IS NULL THEN `pd`.`price` ELSE `od`.`price` END) as `item_price`, ( (CASE WHEN `od`.`price` IS NULL THEN `pd`.`price` ELSE `od`.`price` END) * `ucd`.`qty`)  AS `total_price`, IFNULL( `rd`.`rate`, 0) AS `rating`, IFNULL( `rd`.`message`, '') AS `review_message` FROM `order_detail` AS `uod` " +
                     "INNER JOIN `cart_detail` AS `ucd` ON FIND_IN_SET(`ucd`.`cart_id`, `uod`.`cart_id`) > 0  " +
                     "INNER JOIN `product_detail` AS `pd` ON `pd`.`prod_id` = `ucd`.`prod_id` " +
                     "INNER JOIN `category_detail` AS `cd` ON `pd`.`cat_id` = `cd`.`cat_id` " +
 
                     "LEFT JOIN `brand_detail` AS `bd` ON `pd`.`brand_id` = `bd`.`brand_id` " +
                     "LEFT JOIN `offer_detail` AS `od` ON `pd`.`prod_id` = `od`.`prod_id` AND `od`.`status` = 1 AND `od`.`start_date` <= NOW() AND `od`.`end_date` >= NOW() " +
+                    "LEFT JOIN `review_detail` AS `rd` ON `uod`.`order_id` = `rd`.`order_id` " +
                     "INNER JOIN `image_detail` AS `imd` ON `pd`.`prod_id` = `imd`.`prod_id` AND `imd`.`status` = 1 " +
                     "INNER JOIN `type_detail` AS `td` ON `pd`.`type_id` = `td`.`type_id` " +
                     "WHERE `uod`.`order_id` = ? AND `uod`.`user_id` = ? GROUP BY `ucd`.`cart_id`, `pd`.`prod_id`", [reqObj.order_id, reqObj.user_id, reqObj.order_id, reqObj.user_id], (err, result) => {
