@@ -1123,7 +1123,7 @@ module.exports.controller = (app, io, socket_list) => {
             helper.CheckParameterValid(res, reqObj, ["prod_id", "order_id", "rating", "review_message"], () => {
 
                 db.query("SELECT `od`.`order_id` FROM `order_detail` AS `od` " +
-                    "INNER JOIN`cart_detail` AS`cd` ON FIND_IN_SET(`ucd`.`cart_id`, `uod`.`cart_id`) > 0 AND`od`.`order_id` = ? AND `od`.`user_id` = ? " +
+                    "INNER JOIN`cart_detail` AS`cd` ON FIND_IN_SET(`cd`.`cart_id`, `od`.`cart_id`) > 0 AND`od`.`order_id` = ? AND `od`.`user_id` = ? " +
                     "INNER JOIN`product_detail` AS`pd` ON `cd`.`prod_id` = `pd`.`prod_id` AND `pd`.`prod_id` = ?; "
 
                     +
